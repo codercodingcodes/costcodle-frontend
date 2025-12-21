@@ -1,0 +1,251 @@
+import React, {useEffect, useState} from 'react';
+import './App.css';
+import Game from '../components/gameV2/Game';
+import Header from "../components/header/Header";
+import {DiscordSDK, patchUrlMappings} from "@discord/embedded-app-sdk";
+import games from "../games.json";
+import {UserInfo,UserData,GuessInfo,GameInfo} from "../utils/types";
+import StatBar from "../components/stats/StatBar";
+import header from "../components/header/Header";
+
+type GameDataType = {
+    image:string;
+    price:string;
+    name:string;
+}
+
+const discordSdk = new DiscordSDK("1445980061390999564");
+patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
+async function setupDiscordSdk() {
+    var auth;
+    await discordSdk.ready();
+
+    // Authorize with Discord Client
+    const { code } = await discordSdk.commands.authorize({
+        client_id: "1445980061390999564",
+        response_type: 'code',
+        state: '',
+        prompt: 'none',
+        // More info on scopes here: https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
+        scope: [
+            // Activities will launch through app commands and interactions of user-installable apps.
+            // https://discord.com/developers/docs/tutorials/developing-a-user-installable-app#configuring-default-install-settings-adding-default-install-settings
+            'applications.commands',
+
+            // "applications.builds.upload",
+            // "applications.builds.read",
+            // "applications.store.update",
+            // "applications.entitlements",
+            // "bot",
+            'identify',
+            // "connections",
+            // "email",
+            // "gdm.join",
+            'guilds',
+            // "guilds.join",
+            'guilds.members.read',
+            // "messages.read",
+            // "relationships.read",
+            // 'rpc.activities.write',
+            // "rpc.notifications.read",
+            // "rpc.voice.write",
+            // 'rpc.voice.read',
+            // "webhook.incoming",
+        ],
+    });
+
+    // Retrieve an access_token from your activity's server
+    // see https://discord.com/developers/docs/activities/development-guides/networking#construct-a-full-url
+    const response = await fetch("/api/auth", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            code,
+        }),
+    });
+    const { access_token } = await response.json();
+    console.log(access_token);
+    console.log("access");
+    // Authenticate with Discord client (using the access_token)
+    auth = await discordSdk.commands.authenticate({
+        access_token,
+    });
+
+    if (auth == null) {
+        throw new Error('Authenticate command failed');
+    }
+    return access_token;
+}
+async function getChannel(channelID:string){
+    const params = {
+        channelID:channelID
+    }
+    const response = await fetch("/api/getChannel?" + new URLSearchParams(params).toString(),{
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const query = await response.json();
+    let cUsers:UserData[] = []
+    for (let i = 0; i < query.length; i++) {
+        let current = query[i]
+        let g:GuessInfo = {
+            hGuess:parseFloat(current[2]),
+            lGuess:parseFloat(current[3]),
+            guessCnt:current[6]
+        }
+        let u:UserInfo = {
+            username:current[8],
+            avatar:current[7],
+            userID:current[1],
+            channelID:current[5],
+        }
+        cUsers.push({
+            userInfo:u,
+            guessInfo:g
+        })
+    }
+    return cUsers;
+}
+async function getUserCurrent(userID:string){
+    const params = {
+        userID:userID
+    }
+    const response = await fetch("/api/getUser?" + new URLSearchParams(params).toString(),{
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const query = await response.json();
+    let prevGuess:GuessInfo = {
+        hGuess:0,
+        lGuess:0,
+        guessCnt:0
+    }
+    if (query.length > 0) {
+        const guess = query[0];
+        prevGuess.guessCnt = guess[6]+1;
+        prevGuess.hGuess = parseFloat(guess[2]);
+        prevGuess.lGuess = parseFloat(guess[3]);
+    }else {
+        console.log("no user found");
+    }
+    return prevGuess;
+}
+function App() {
+    const [token,setToken]=useState("");
+    const [users,setUsers] = useState<UserData[]>([]);
+    const [userData,setUserData] = useState<UserData>();
+    const [gameInfo,setGameInfo] = useState<GameInfo>();
+    const [statbar,setStatBar] = useState<boolean>(false);
+
+
+    async function getUser(token:string){
+        console.log("user");
+        console.log(token);
+        const response = await fetch("https://discord.com/api/users/@me",{
+            method:"GET",
+            headers:{
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        const r = await response.json();
+        const currentUser:UserInfo = {
+            avatar:r["avatar"],
+            userID:r["id"],
+            username:r["username"],
+            channelID:discordSdk.channelId
+        }
+        return currentUser;
+    }
+    useEffect(() => {
+        setupDiscordSdk().then((token) => {
+            console.log("Discord SDK is ready");
+            setToken(token);
+        });},[])
+
+    useEffect(() => {
+        if (token.length>0) {
+            getDate().then(d => {
+                parseGame(d);
+            });
+            getUser(token).then(u => {
+                console.log("user done")
+                getUserCurrent(u.userID).then(g => {
+                    console.log(g);
+                    console.log("User stat done");
+                    const temp = {
+                        userInfo: u,
+                        guessInfo: g
+                    }
+                    setUserData(temp)
+
+                });
+                if (discordSdk.channelId) {
+                    getChannel(discordSdk.channelId).then(cUsers => {
+                        console.log(cUsers);
+                        console.log("channel done");
+                        setUsers(cUsers);
+                    })
+                } else {
+                    console.log("no channel");
+                }
+            });
+        }
+    }, [token]);
+
+
+    async function getDate() {
+        const response = await fetch("/api/date", {
+            method: 'GET'
+        })
+        const {date} = await response.json();
+        console.log(date);
+        console.log("date");
+        return date
+    }
+
+
+    function parseGame(date:number){
+        const protocol = `https`;
+        const clientId = '1445980061390999564';
+        const proxyDomain = 'discordsays.com';
+        const gameObj: {[key: string]: GameDataType} = games
+        const gameI = "game-"+(date%3399).toString();
+        console.log(gameI)
+        const imgURL:string[] = gameObj[gameI].image.split("/")
+        const resourcePath = "/img/"+imgURL[imgURL.length-1];
+        const url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
+        const currentGame:GameInfo = {
+            image :url,
+            price :parseFloat(gameObj[gameI].price.substring(1)),
+            name:gameObj[gameI].name,
+            date:date
+        }
+        setGameInfo(currentGame);
+    }
+    function toggleStat(){
+        setStatBar(!statbar)
+    }
+    return (
+      <div className={"bg-gray-200"}>
+          {statbar && gameInfo
+              ?
+              <StatBar users={users} toggle={toggleStat} price={gameInfo.price}/>
+              :<div></div>}
+          <Header toggle={toggleStat} />
+          <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
+              {userData && gameInfo?
+                  <Game user={userData} gameData={gameInfo}/>
+                  :<p>loading</p>}
+          </div>
+      </div>
+    );
+}
+
+export default App;

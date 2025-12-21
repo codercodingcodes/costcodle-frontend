@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@font-face {
+  font-family: 'costco';
+  src: url('../resources/Futura Extra Bold Oblique.otf') format('opentype');
+}
+@theme {
+  --breakpoint-discord: 400px;
+  --font-costco: "costco", courier;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #e5e7eb;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
