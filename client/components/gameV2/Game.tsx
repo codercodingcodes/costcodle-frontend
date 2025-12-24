@@ -1,12 +1,10 @@
-import React, {useEffect, useRef} from 'react';
+import React, {use, useEffect, useRef} from 'react';
 import GuessInput from "../guessInput/GuessInput";
 import { useState } from 'react';
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 
 
-async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,userInfo:UserInfo){
-    console.log(userInfo)
-    console.log("user info")
+async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo){
     await fetch("/api/guess",{
         method: "POST",
         headers: {
@@ -20,6 +18,20 @@ async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,userInfo:Us
             "channelID":userInfo.channelID,
             "avatar":userInfo.avatar,
             "username":userInfo.username,
+            "gameCompleted":completed
+        }),
+    })
+}
+
+async function updateChannel(channelID:string,userID:string){
+    await fetch("/api/channel",{
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            channelID:channelID,
+            userID:userID,
         }),
     })
 }
@@ -38,6 +50,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     const [dec, setDec] = useState(false);
     const [guessCnt,setGuessCnt] = useState(0);
     const [freshUser,setFreshUser] = useState(user);
+    const [completed,setCompleted] = useState(false);
 
     const userInput = useRef<HTMLInputElement>(null);
     const alert = useRef<HTMLDivElement>(null);
@@ -46,22 +59,26 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     useEffect(() => {
         console.log("avatar retrieved")
         setFreshUser(user);
+        if (user.userInfo.channelID) {
+            updateChannel(user.userInfo.channelID, user.userInfo.userID)
+        }
     }, [user]);
 
     function guessDistance(val:number){
         const diff = Math.abs(val - gameData.price);
-        if (diff<gameData.price/20 || diff<1.4){
+        if (diff<gameData.price/20 || diff<0.6){
             return 0;
-        }else if(diff<gameData.price/10 || diff<3.4){
+        }else if(diff<gameData.price/10 || diff<3){
             return 1;
         }else{
             return 2;
         }
     }
     function displayAlert(){
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setMsgTimer(msgTimer-1);
         }, 2000);
+        return () => clearTimeout(timer);
     }
 
     useEffect(() => {
@@ -73,9 +90,19 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     }, [gameOver]);
 
     useEffect(() => {
-        if (msg.length>0) {
-            setMsgTimer(msgTimer+1);
+        if (msgTimer === 0){
+            setMsg("")
+        }else{
             displayAlert()
+        }
+    }, [msgTimer]);
+
+    useEffect(() => {
+        console.log(msg)
+        if (msg.length>0) {
+            console.log("message timer")
+            console.log(msgTimer)
+            setMsgTimer(msgTimer+1);
         }
     }, [msg]);
 
@@ -93,23 +120,19 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
         setHigh(user.guessInfo.hGuess);
         setLow(user.guessInfo.lGuess);
         setGuessCnt(user.guessInfo.guessCnt);
+        setCompleted(user.guessInfo.completed)
     }, [user]);
+    useEffect(() => {
+        if (completed){
+            setWin(true);
+            setGameOver(true);
+        }
+    }, [completed]);
 
     useEffect(() => {
         userInput.current?.focus();
     }, [hasFocus]);
-    useEffect(() => {
-        if (guessDistance(low) === 0){
-            setWin(true);
-            setGameOver(true);
-        }
-    }, [low]);
-    useEffect(() => {
-        if (guessDistance(high) === 0){
-            setWin(true);
-            setGameOver(true);
-        }
-    }, [high]);
+
 
 
     const keyDict:{[key:string]:number} = {
@@ -159,13 +182,17 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                 }
             } else {
                 if (n===12){
-
                     let dec = fn;
                     while (dec > 1){
                         dec = dec/10
                     }
                     const guess = wn+dec;
-                    if (guess > 0) {
+                    if (guess>high && high > 0){
+                        setMsg("Price cannot be higher than "+high.toString())
+                    }else if (guess<low && low > 0){
+                        console.log("invalid low")
+                        setMsg("Price cannot be lower than "+low.toString())
+                    }else if (guess > 0) {
                         let isHigh = false;
                         let isLow = false;
                         if ((guess <= high || high === 0) && guess >= gameData.price) {
@@ -175,8 +202,15 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                             setLow(guess);
                             isLow = true;
                         }
-                        sendGuessDB(guess, isHigh, isLow, freshUser.userInfo).then(r => console.log("guess sent"))
+                        let completed = guessDistance(guess) === 0;
+                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo).then(r => {
+                            console.log("guess sent")
+                            if (user.userInfo.channelID) {
+                                updateChannel(user.userInfo.channelID, user.userInfo.userID)
+                            }
+                        })
                         setGuessCnt(guessCnt + 1)
+                        setCompleted(completed)
                     }else {
                         setMsg("Please input a value greater than 0")
                     }
@@ -207,7 +241,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     return (
         <div className='Game sm:w-2/3 md:w-1/3 m-auto font-serif '>
             {(msgTimer>0 && msg.length>0)?
-            <div className={"bg-gray-300 block w-1/2 md:w-1/4 h-[100px] fixed bottom-0 left-1/2 -translate-x-1/2"} ref={alert}>
+            <div className={"bg-gray-300 block w-1/2 md:w-1/4 fixed top-50 left-1/2 -translate-x-1/2 wrap-normal text-center border-gray-500 border-2 rounded-2xl"} ref={alert}>
                 <p>
                     {msg}
                 </p>
@@ -236,7 +270,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                             onFocus={() => setHasFocus(true)}
                             onBlur={() => setHasFocus(false)}
                             ref={userInput}
-                            className={"h-0 w-0"}
+                            className={"h-0 w-0 sm:hidden md:block"}
                         />
                         :<div></div>
                     }

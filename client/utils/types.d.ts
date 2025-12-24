@@ -15,6 +15,7 @@ export type GuessInfo = {
     hGuess:number;
     lGuess:number;
     guessCnt:number;
+    completed:boolean;
 }
 export type UserData = {
     userInfo:UserInfo;

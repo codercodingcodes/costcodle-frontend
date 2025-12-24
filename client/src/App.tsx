@@ -6,7 +6,10 @@ import {DiscordSDK, patchUrlMappings} from "@discord/embedded-app-sdk";
 import games from "../games.json";
 import {UserInfo,UserData,GuessInfo,GameInfo} from "../utils/types";
 import StatBar from "../components/stats/StatBar";
-import header from "../components/header/Header";
+import InfoPanel from "../components/infoPanel/InfoPanel";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+// @ts-ignore
+import logo from "./images.png";
 
 type GameDataType = {
     image:string;
@@ -82,7 +85,7 @@ async function getChannel(channelID:string){
     const params = {
         channelID:channelID
     }
-    const response = await fetch("/api/getChannel?" + new URLSearchParams(params).toString(),{
+    const response = await fetch("/api/channel?" + new URLSearchParams(params).toString(),{
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -95,13 +98,14 @@ async function getChannel(channelID:string){
         let g:GuessInfo = {
             hGuess:parseFloat(current[2]),
             lGuess:parseFloat(current[3]),
-            guessCnt:current[6]
+            guessCnt:current[5],
+            completed:current[6]
         }
         let u:UserInfo = {
             username:current[8],
-            avatar:current[7],
+            avatar:current[9],
             userID:current[1],
-            channelID:current[5],
+            channelID:discordSdk.channelId,
         }
         cUsers.push({
             userInfo:u,
@@ -114,23 +118,27 @@ async function getUserCurrent(userID:string){
     const params = {
         userID:userID
     }
-    const response = await fetch("/api/getUser?" + new URLSearchParams(params).toString(),{
+    const response = await fetch("/api/guess?" + new URLSearchParams(params).toString(),{
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
         }
     })
     const query = await response.json();
+    console.log(query)
+    console.log("query result")
     let prevGuess:GuessInfo = {
         hGuess:0,
         lGuess:0,
-        guessCnt:0
+        guessCnt:0,
+        completed:false
     }
     if (query.length > 0) {
         const guess = query[0];
-        prevGuess.guessCnt = guess[6]+1;
+        prevGuess.guessCnt = guess[5]+1;
         prevGuess.hGuess = parseFloat(guess[2]);
         prevGuess.lGuess = parseFloat(guess[3]);
+        prevGuess.completed = guess[6];
     }else {
         console.log("no user found");
     }
@@ -142,6 +150,7 @@ function App() {
     const [userData,setUserData] = useState<UserData>();
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
+    const [info,setInfo] = useState<boolean>(false);
 
 
     async function getUser(token:string){
@@ -167,6 +176,8 @@ function App() {
         setupDiscordSdk().then((token) => {
             console.log("Discord SDK is ready");
             setToken(token);
+        }).catch(()=>{
+            discordSdk.close(4000,"Error loading, Please try again later")
         });},[])
 
     useEffect(() => {
@@ -232,17 +243,25 @@ function App() {
     function toggleStat(){
         setStatBar(!statbar)
     }
+    function toggleInfo(){
+        setInfo(!info)
+    }
     return (
       <div className={"bg-gray-200"}>
+          <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo
               ?
               <StatBar users={users} toggle={toggleStat} price={gameInfo.price}/>
               :<div></div>}
-          <Header toggle={toggleStat} />
+          {info
+              ?<InfoPanel toggle={toggleInfo}/>
+              :<div></div>
+          }
+          <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
                   <Game user={userData} gameData={gameInfo}/>
-                  :<p>loading</p>}
+                  :<LoadingScreen/>}
           </div>
       </div>
     );

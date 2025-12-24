@@ -5,8 +5,18 @@
 }
 @theme {
   --breakpoint-discord: 400px;
+  --breakpoint-icon: 200px;
   --font-costco: "costco", courier;
+  --animate-shake: shake 1s ease-in-out;
+  @keyframes shake {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    75% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+  }
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

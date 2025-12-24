@@ -8,19 +8,9 @@ import cross from "./Red_X.svg.png";
 
 function StatCell({user,price}:{user:UserData,price:number}) {
     const progress = [];
-    const correct = (guessDistance(user.guessInfo.hGuess) === 0 || guessDistance(user.guessInfo.lGuess) === 0);
-    function guessDistance(val:number){
-        const diff = Math.abs(val - price);
-        if (diff<price/20 || diff<1.4){
-            return 0;
-        }else if(diff<price/10 || diff<3.4){
-            return 1;
-        }else{
-            return 2;
-        }
-    }
+
     for (let i=0;i<=Math.min(user.guessInfo.guessCnt,4);i++){
-        if (correct && i == user.guessInfo.guessCnt) {
+        if (user.guessInfo.completed && i == user.guessInfo.guessCnt) {
             progress.push(<img src={checkMark} className={"w-[20px] h-[20px]"}/>)
         } else{
             progress.push(<img src={cross} className={"w-[20px] h-[20px]"}/>)
