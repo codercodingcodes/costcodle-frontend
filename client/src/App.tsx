@@ -34,7 +34,6 @@ async function setupDiscordSdk() {
             // Activities will launch through app commands and interactions of user-installable apps.
             // https://discord.com/developers/docs/tutorials/developing-a-user-installable-app#configuring-default-install-settings-adding-default-install-settings
             'applications.commands',
-
             // "applications.builds.upload",
             // "applications.builds.read",
             // "applications.store.update",
@@ -57,6 +56,8 @@ async function setupDiscordSdk() {
         ],
     });
 
+    console.log(code);
+    console.log("discordSdk initialized response");
     // Retrieve an access_token from your activity's server
     // see https://discord.com/developers/docs/activities/development-guides/networking#construct-a-full-url
     const response = await fetch("/api/auth", {
@@ -67,8 +68,10 @@ async function setupDiscordSdk() {
         body: JSON.stringify({
             code,
         }),
+    }).catch(()=>{
+        discordSdk.close(4000,"Error loading, Please try again later")
     });
-    const { access_token } = await response.json();
+    const { access_token } = await response?.json();
     console.log(access_token);
     console.log("access");
     // Authenticate with Discord client (using the access_token)
@@ -144,6 +147,7 @@ async function getUserCurrent(userID:string){
     }
     return prevGuess;
 }
+
 function App() {
     const [token,setToken]=useState("");
     const [users,setUsers] = useState<UserData[]>([]);
@@ -176,9 +180,8 @@ function App() {
         setupDiscordSdk().then((token) => {
             console.log("Discord SDK is ready");
             setToken(token);
-        }).catch(()=>{
-            discordSdk.close(4000,"Error loading, Please try again later")
-        });},[])
+        })
+        ;},[])
 
     useEffect(() => {
         if (token.length>0) {
@@ -221,7 +224,6 @@ function App() {
         return date
     }
 
-
     function parseGame(date:number){
         const protocol = `https`;
         const clientId = '1445980061390999564';
@@ -249,7 +251,7 @@ function App() {
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
-          {statbar && gameInfo
+          {statbar && gameInfo && users.length>0
               ?
               <StatBar users={users} toggle={toggleStat} price={gameInfo.price}/>
               :<div></div>}

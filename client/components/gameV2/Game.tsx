@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 
 
-async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo){
+async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number){
     await fetch("/api/guess",{
         method: "POST",
         headers: {
@@ -15,10 +15,10 @@ async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:b
             "isHigh":isHigh,
             "isLow":isLow,
             "userID":userInfo.userID,
-            "channelID":userInfo.channelID,
             "avatar":userInfo.avatar,
             "username":userInfo.username,
-            "gameCompleted":completed
+            "gameCompleted":completed,
+            "guessCnt":guessCnt,
         }),
     })
 }
@@ -77,7 +77,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     function displayAlert(){
         const timer = setTimeout(() => {
             setMsgTimer(msgTimer-1);
-        }, 2000);
+        }, 3000);
         return () => clearTimeout(timer);
     }
 
@@ -203,7 +203,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                             isLow = true;
                         }
                         let completed = guessDistance(guess) === 0;
-                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo).then(r => {
+                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt).then(r => {
                             console.log("guess sent")
                             if (user.userInfo.channelID) {
                                 updateChannel(user.userInfo.channelID, user.userInfo.userID)
@@ -247,57 +247,64 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                 </p>
             </div>
                 :<div></div>}
+            <p>Guess #{guessCnt} / 5 guesses</p>
             <div className={"border-black border-2 p-2 bg-white mt-2"}>
                 <div className={"text-left text-3xl ml-5"}>
-                    {gameData.date}
+                    Game #{gameData.date}
                 </div>
                 <div className={"text-left text-2xl"}>
                     {gameData.name}
                 </div>
-                <div className={"grid grid-cols-2 w-full font-sans"} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
-                    :high==0?
-                        {backgroundColor:"white"}
-                        :{backgroundColor:"red"}}>
-                    <p className={"text-left font-bold text-sm"}>Price Is Less Than</p>
-                    {(high>0) ?<p className={"text-right text-xl"}>{high}</p>
-                    :<p></p>}
-                    {!gameOver?
-                        <input
-                            type="text"
-                            onKeyDown={handleKeyDown}
-                            placeholder="Press here..."
-                            autoFocus={true}
-                            onFocus={() => setHasFocus(true)}
-                            onBlur={() => setHasFocus(false)}
-                            ref={userInput}
-                            className={"h-0 w-0 sm:hidden md:block"}
-                        />
-                        :<div></div>
-                    }
-                </div>
-                <div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black"} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
-                    :low==0?
-                        {backgroundColor:"white"}
-                        :{backgroundColor:"red"}}>
-                    <p className={"text-left font-bold text-sm"}>Price Is More Than</p>
-                    {(low>0) ?<p className={"text-right text-xl"}>{low}</p>
+                {high > 0?
+                    (<div className={"grid grid-cols-2 w-full font-sans"} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
+                        :high==0?
+                            {backgroundColor:"white"}
+                            :{backgroundColor:"red"}}>
+                        <p className={"text-left font-bold text-sm"}>Price Is Less Than</p>
+                        {(high>0) ?<p className={"text-right text-xl"}>{high}</p>
                         :<p></p>}
-                </div>
+                    </div>)
+                    :<div></div>}
+                {!gameOver?
+                    <input
+                        type="text"
+                        onKeyDown={handleKeyDown}
+                        placeholder="Press here..."
+                        autoFocus={true}
+                        onFocus={() => setHasFocus(true)}
+                        onBlur={() => setHasFocus(false)}
+                        ref={userInput}
+                        className={"h-0 w-0 sm:hidden md:block"}
+                    />
+                    :<div></div>
+                }
+                {low > 0?
+                    (<div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black"} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
+                        :low==0?
+                            {backgroundColor:"white"}
+                            :{backgroundColor:"red"}}>
+                        <p className={"text-left font-bold text-sm"}>Price Is More Than</p>
+                        {(low>0) ?<p className={"text-right text-xl"}>{low}</p>
+                            :<p></p>}
+                    </div>)
+                    :<div></div>}
                 <div className={"flex justify-end items-end"}>
                     <div className={"text-7xl font-bold"}>
                         {(gameOver)?<p>{gameData.price}</p>
-                            : (dec)
-                            ?(<p className={"pl-16 "}>{wn}.{fn}</p>)
-                            :(<p className={"pl-16 "}>{wn}</p>)}
+                            :(wn>0 || fn>0 || dec)?
+                                (dec) ?
+                                    (<p className={"pl-16 "}>{wn}.{fn}</p>)
+                                    :(<p className={"pl-16 "}>{wn}</p>)
+                                :(<p className={"text-3xl"}>Start Typing!</p>)}
                     </div>
                 </div>
             </div>
-            <div className={"grid grid-cols-2 w-full"}>
+            <div className={"grid grid-cols-2 w-full mt-2"}>
                 <div className={""}>
                     <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
                 </div>
                 {!gameOver?
-                    <div className={"w-full mt-2 m-auto"}>
+                    <div className={"w-full mt-2 m-auto h-full"}>
                         <GuessInput setVal={(x)=>updateVal(x)}/>
                     </div>
                     :<div></div>}
