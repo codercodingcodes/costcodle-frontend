@@ -12,7 +12,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://costcodle-321020937506.europe-west1.run.app',
-        changeOrigin: true,
+        changeOrigin: false,
         secure: false,
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),

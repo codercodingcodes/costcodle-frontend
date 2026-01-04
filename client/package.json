@@ -24,8 +24,10 @@
     "@stitches/react": "^1.2.8",
     "@tailwindcss/vite": "^4.1.17",
     "@uidotdev/usehooks": "^2.4.1",
+    "@vercel/analytics": "^1.6.1",
     "react-json-tree": "^0.20.0",
     "react-router-dom": "^7.10.1",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "vercel": "^50.1.3"
   }
 }

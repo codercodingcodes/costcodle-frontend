@@ -8,6 +8,7 @@ import {UserInfo,UserData,GuessInfo,GameInfo} from "../utils/types";
 import StatBar from "../components/stats/StatBar";
 import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
+import {inject} from "@vercel/analytics";
 // @ts-ignore
 import logo from "./images.png";
 
@@ -16,7 +17,7 @@ type GameDataType = {
     price:string;
     name:string;
 }
-
+inject();
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
