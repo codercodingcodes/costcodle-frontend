@@ -11,8 +11,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://costcodle-321020937506.europe-west1.run.app',
-        changeOrigin: false,
+        target: 'costcodle.vercel.app',
+        changeOrigin: true,
         secure: true,
         ws: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
