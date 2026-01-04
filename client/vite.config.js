@@ -1,7 +1,7 @@
 import {defineConfig} from 'vite';
 import tailwindcss from '@tailwindcss/vite'
 
-
+console.log("testing")
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
