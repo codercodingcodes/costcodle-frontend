@@ -14,7 +14,7 @@ export default defineConfig({
         target: 'https://costcodle-321020937506.europe-west1.run.app',
         changeOrigin: false,
         secure: false,
-        ws: true,
+        // ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         headers:[
           {"Access-Control-Allow-Origin":"*"},

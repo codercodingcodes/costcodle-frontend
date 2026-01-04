@@ -18,7 +18,6 @@ type GameDataType = {
     name:string;
 }
 inject();
-console.log("testing")
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
@@ -251,8 +250,7 @@ function App() {
         setInfo(!info)
     }
     return (
-      <div className={"bg-black"}>
-          <p>Testing</p>
+      <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>0
               ?
@@ -263,7 +261,7 @@ function App() {
               :<div></div>
           }
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
-          <div className="App bg-black pt-20 md:pt-0 h-full">
+          <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
                   <Game user={userData} gameData={gameInfo}/>
                   :<LoadingScreen/>}
