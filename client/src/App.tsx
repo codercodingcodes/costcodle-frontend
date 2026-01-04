@@ -250,7 +250,7 @@ function App() {
         setInfo(!info)
     }
     return (
-      <div className={"bg-gray-200"}>
+      <div className={"bg-black"}>
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>0
               ?
