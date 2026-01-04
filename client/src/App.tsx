@@ -251,7 +251,7 @@ function App() {
     }
     return (
       <div className={"bg-gray-200"}>
-          <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
+          <img className={"w-full h-full fixed sm:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>0
               ?
               <StatBar users={users} toggle={toggleStat} price={gameInfo.price}/>

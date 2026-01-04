@@ -10,7 +10,7 @@ function StatBar({users,toggle,price}:{users:UserData[],toggle:()=>void,price:nu
                 <StatCell user={user} price={price} />
             ))}
             <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl"} onClick={toggle}>
-                <p>
+                <p className={"bg-red-500 p-1 border-red-600"}>
                     X
                 </p>
             </button>

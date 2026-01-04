@@ -247,7 +247,9 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                 </p>
             </div>
                 :<div></div>}
-            <p>Guess #{guessCnt} / 5 guesses</p>
+            {!completed?
+                <p>Guess #{guessCnt} / 5 guesses</p>
+                :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
             <div className={"border-black border-2 p-2 bg-white mt-2"}>
                 <div className={"text-left text-3xl ml-5"}>
                     Game #{gameData.date}
@@ -255,7 +257,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                 <div className={"text-left text-2xl"}>
                     {gameData.name}
                 </div>
-                {high > 0?
+                {high > 0 && !completed?
                     (<div className={"grid grid-cols-2 w-full font-sans"} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
                         :high==0?
                             {backgroundColor:"white"}
@@ -278,7 +280,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                     />
                     :<div></div>
                 }
-                {low > 0?
+                {low > 0 && !completed?
                     (<div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black"} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
                         :low==0?
                             {backgroundColor:"white"}

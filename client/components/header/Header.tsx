@@ -3,7 +3,7 @@ import React from 'react';
 
 function Header({toggleStat,toggleInfo}:{toggleStat:() => void ,toggleInfo:()=>void}) {
     return (
-        <div className="grid grid-cols-3 w-full xl:w-1/3 text-center m-auto font-costco h-[50px] p-2 pt-20 md:pt-0 bg-white border-b-1 border-solid border-black">
+        <div className="grid grid-cols-3 w-full xl:w-1/3 text-center m-auto font-costco h-[50px] sm:h-[100px] p-2 pt-20 md:pt-0 bg-white border-b-1 border-solid border-black">
             <button onClick={toggleInfo}>
                 How to play
             </button>
