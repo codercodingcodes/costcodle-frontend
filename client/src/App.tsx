@@ -261,7 +261,7 @@ function App() {
               :<div></div>
           }
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
-          <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
+          <div className="App bg-black pt-20 md:pt-0 h-full">
               {userData && gameInfo?
                   <Game user={userData} gameData={gameInfo}/>
                   :<LoadingScreen/>}
