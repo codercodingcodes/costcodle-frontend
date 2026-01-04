@@ -16,6 +16,12 @@ export default defineConfig({
         secure: false,
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        headers:[
+          {"Access-Control-Allow-Origin":"*"},
+          {"Access-Control-Allow-Credentials": true},
+          {"Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT"},
+          {"Access-Control-Allow-Headers":"*"},
+        ]
       },
     },
     hmr: {
