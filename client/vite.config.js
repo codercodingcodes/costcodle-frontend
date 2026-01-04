@@ -11,17 +11,18 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'costcodle.vercel.app',
+        // target: 'costcodle.vercel.app',
+        target: 'https://costcodle-321020937506.europe-west1.run.app',
         changeOrigin: true,
-        // secure: true,
-        // ws: false,
+        secure: true,
+        ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        // headers:[
-        //   {"Access-Control-Allow-Origin":"*"},
-        //   {"Access-Control-Allow-Credentials": true},
-        //   {"Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT"},
-        //   {"Access-Control-Allow-Headers":"*"},
-        // ]
+        headers:[
+          {"Access-Control-Allow-Origin":"*"},
+          {"Access-Control-Allow-Credentials": true},
+          {"Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT"},
+          {"Access-Control-Allow-Headers":"*"},
+        ]
       },
     },
     hmr: {
