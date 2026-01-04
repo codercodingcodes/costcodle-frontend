@@ -13,15 +13,15 @@ export default defineConfig({
       '/api': {
         target: 'costcodle.vercel.app',
         changeOrigin: true,
-        secure: true,
-        ws: false,
+        // secure: true,
+        // ws: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        headers:[
-          {"Access-Control-Allow-Origin":"*"},
-          {"Access-Control-Allow-Credentials": true},
-          {"Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT"},
-          {"Access-Control-Allow-Headers":"*"},
-        ]
+        // headers:[
+        //   {"Access-Control-Allow-Origin":"*"},
+        //   {"Access-Control-Allow-Credentials": true},
+        //   {"Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT"},
+        //   {"Access-Control-Allow-Headers":"*"},
+        // ]
       },
     },
     hmr: {
