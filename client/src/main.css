@@ -4,8 +4,7 @@
   src: url('../resources/Futura Extra Bold Oblique.otf') format('opentype');
 }
 @theme {
-  --breakpoint-discord: 400px;
-  --breakpoint-icon: 300px;
+  --breakpoint-icon: 400px;
   --font-costco: "costco", courier;
   --animate-shake: shake 1s ease-in-out;
   @keyframes shake {
