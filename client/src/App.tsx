@@ -65,10 +65,6 @@ async function setupDiscordSdk() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin":"*",
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Methods": "GET,DELETE,PATCH,POST,PUT",
-            "Access-Control-Allow-Headers":"*"
         },
         body: JSON.stringify({
             code,
