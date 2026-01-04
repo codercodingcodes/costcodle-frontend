@@ -18,6 +18,7 @@ type GameDataType = {
     name:string;
 }
 inject();
+console.log("testing")
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {

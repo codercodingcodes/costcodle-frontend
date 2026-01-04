@@ -240,6 +240,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
     }
     return (
         <div className='Game sm:w-2/3 md:w-1/3 m-auto font-serif '>
+            <p>testing</p>
             {(msgTimer>0 && msg.length>0)?
             <div className={"bg-gray-300 block w-1/2 md:w-1/4 fixed top-50 left-1/2 -translate-x-1/2 wrap-normal text-center border-gray-500 border-2 rounded-2xl"} ref={alert}>
                 <p>
