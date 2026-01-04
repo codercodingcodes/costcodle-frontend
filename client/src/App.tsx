@@ -251,6 +251,7 @@ function App() {
     }
     return (
       <div className={"bg-black"}>
+          Testing
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>0
               ?
