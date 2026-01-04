@@ -6,7 +6,7 @@ function InfoPanel({toggle}:{toggle:() => void }) {
         <div className="fixed w-full h-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
             <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl"} onClick={toggle}>
                 <p className={"bg-red-500 p-1 border-red-600 border-solid border-2 rounded-lg"}>
-                    X
+                    x
                 </p>
             </button>
             <div className={"wrap-break-word overflow-scroll text-center font-serif h-full w-full"}>

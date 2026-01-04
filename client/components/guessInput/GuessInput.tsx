@@ -13,7 +13,7 @@ function GuessInput({setVal}:{setVal:(x:number) => void}) {
             <NumBtn num={"6"} setVal={setVal} value={6}/>
             <NumBtn num={"7"} setVal={setVal} value={7}/>
             <NumBtn num={"8"} setVal={setVal} value={8}/>
-            <NumBtn num={"X"} setVal={setVal} value={11}/>
+            <NumBtn num={"del"} setVal={setVal} value={11}/>
             <NumBtn num={"9"} setVal={setVal} value={9}/>
             <NumBtn num={"0"} setVal={setVal} value={0}/>
             <NumBtn num={"."} setVal={setVal} value={10}/>
