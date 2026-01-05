@@ -8,6 +8,7 @@ import StatBar from "../components/stats/StatBar";
 import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {inject} from "@vercel/analytics";
+import * as Sentry from "@sentry/react";
 // @ts-ignore
 import logo from "./images.png";
 
@@ -176,6 +177,7 @@ function App() {
             console.log("Discord SDK is ready");
             setToken(token);
         }).catch(r=>{
+            Sentry.logger.fatal("failed to set up discord sdk " + r.toString())
             console.log("failed to set up discord sdk")
         });
         },[])
@@ -185,6 +187,7 @@ function App() {
             parseGame().then(r=>{
                 console.log("game info retrieved")
             }).catch(r=>{
+                Sentry.logger.fatal("failed to retrieve game info " + r.toString())
                 console.log("failed to retrieve game info")
             })
             getUser(token).then(u => {
@@ -197,8 +200,9 @@ function App() {
                         guessInfo: g
                     }
                     setUserData(temp)
-                }).catch(reason => {
-                    console.log("failed to get current user info")
+                }).catch(r => {
+                    Sentry.logger.fatal("failed to get current user " + r.toString())
+                    console.log("failed to get current user")
                 });
                 if (discordSdk.channelId) {
                     getChannel(discordSdk.channelId).then(cUsers => {
@@ -206,12 +210,14 @@ function App() {
                         console.log("channel done");
                         setUsers(cUsers);
                     }).catch(r=>{
+                        Sentry.logger.fatal("failed to get channel info " + r.toString())
                         console.log("failed to get channel info")
                     })
                 } else {
                     console.log("no channel");
                 }
             }).catch(r=>{
+                Sentry.logger.fatal("failed to get current user token " + r.toString())
                 console.log("failed to retrieve user token")
             });
         }

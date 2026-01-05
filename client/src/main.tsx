@@ -9,7 +9,8 @@ Sentry.init({
     dsn: "https://b57458227a52237b9a973fa466c31d14@o4510660094787584.ingest.us.sentry.io/4510660099112960",
     // Setting this option to true will send default PII data to Sentry.
     // For example, automatic IP address collection on events
-    sendDefaultPii: true
+    sendDefaultPii: true,
+    enableLogs: true,
 });
 
 const root = ReactDOM.createRoot(
