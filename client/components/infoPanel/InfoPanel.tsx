@@ -5,7 +5,7 @@ function InfoPanel({toggle}:{toggle:() => void }) {
     return (
         <div className="fixed w-full h-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
             <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
-                <p className={"-translate-y-[10px]"}>
+                <p className={"-translate-y-[8px]"}>
                     x
                 </p>
             </button>
