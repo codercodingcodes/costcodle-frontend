@@ -9,8 +9,8 @@ function StatBar({users,toggle,price}:{users:UserData[],toggle:()=>void,price:nu
             {users.map((user:UserData) => (
                 <StatCell user={user} price={price} />
             ))}
-            <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl"} onClick={toggle}>
-                <p className={"bg-red-500 p-1 border-red-600 border-solid border-2 rounded-lg"}>
+            <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
+                <p className={"-translate-y-[10px]"}>
                     x
                 </p>
             </button>
