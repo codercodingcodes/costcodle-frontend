@@ -155,6 +155,7 @@ function App() {
     const [userData,setUserData] = useState<UserData>();
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
+    const [progress,setProgress] = useState<number>(0);
     const [info,setInfo] = useState<boolean>(false);
 
 
@@ -186,6 +187,7 @@ function App() {
 
     useEffect(() => {
         if (token.length>0) {
+            setProgress(progress+1)
             getDate().then(d => {
                 parseGame(d);
             });
@@ -199,13 +201,14 @@ function App() {
                         guessInfo: g
                     }
                     setUserData(temp)
-
+                    setProgress(progress+1)
                 });
                 if (discordSdk.channelId) {
                     getChannel(discordSdk.channelId).then(cUsers => {
                         console.log(cUsers);
                         console.log("channel done");
                         setUsers(cUsers);
+                        setProgress(progress+1)
                     })
                 } else {
                     console.log("no channel");
@@ -264,7 +267,7 @@ function App() {
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
                   <Game user={userData} gameData={gameInfo}/>
-                  :<LoadingScreen/>}
+                  :<LoadingScreen progress={progress}/>}
           </div>
       </div>
     );
