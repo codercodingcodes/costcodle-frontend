@@ -250,7 +250,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
             {!completed?
                 <p>Guess #{guessCnt} / 5 guesses</p>
                 :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
-            <div className={"border-black border-2 p-2 bg-white mt-2"}>
+            <div className={"border-black border-2 p-2 bg-white mt-2 h-[200px]"}>
                 <div className={"text-left text-3xl ml-5"}>
                     Game #{gameData.date}
                 </div>
@@ -297,7 +297,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                                 (dec) ?
                                     (<p className={"pl-16 "}>{wn}.{fn}</p>)
                                     :(<p className={"pl-16 "}>{wn}</p>)
-                                :(<p className={"text-7xl"}>Start Typing!</p>)}
+                                :(<p className={"text-3xl"}>Start Typing!</p>)}
                     </div>
                 </div>
             </div>
