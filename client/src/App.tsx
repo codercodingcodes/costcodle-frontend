@@ -186,9 +186,10 @@ function App() {
         if (token.length>0) {
             parseGame().then(r=>{
                 console.log("game info retrieved")
-            }).catch(r=>{
+            })
+                .catch(r=>{
                 Sentry.logger.fatal("failed to retrieve game info " + r.toString())
-                console.log("failed to retrieve game info")
+                console.error("failed to retrieve game info" + r.toString())
             })
             getUser(token).then(u => {
                 console.log("user done")
@@ -202,7 +203,7 @@ function App() {
                     setUserData(temp)
                 }).catch(r => {
                     Sentry.logger.fatal("failed to get current user " + r.toString())
-                    console.log("failed to get current user")
+                    console.error("failed to get current user " + r.toString())
                 });
                 if (discordSdk.channelId) {
                     getChannel(discordSdk.channelId).then(cUsers => {
@@ -211,14 +212,14 @@ function App() {
                         setUsers(cUsers);
                     }).catch(r=>{
                         Sentry.logger.fatal("failed to get channel info " + r.toString())
-                        console.log("failed to get channel info")
+                        console.error("failed to get channel info" + r.toString())
                     })
                 } else {
                     console.log("no channel");
                 }
             }).catch(r=>{
                 Sentry.logger.fatal("failed to get current user token " + r.toString())
-                console.log("failed to retrieve user token")
+                console.error("failed to retrieve user token " + r.toString())
             });
         }
     }, [token]);
