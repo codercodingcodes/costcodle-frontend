@@ -6,7 +6,7 @@
 @theme {
   --breakpoint-icon: 400px;
   --font-costco: "costco", courier;
-  --animate-fade: fade 1s ease-in-out;
+  --animate-fade: fade 1s ease-in-out infinite,;
   @keyframes fade {
     0% { opacity: 0.5; }
     50% { opacity: 1; }
