@@ -301,7 +301,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                     </div>
                 </div>
             </div>
-            <div className={"grid grid-cols-2 w-full mt-2 bottom-0"}>
+            <div className={"grid grid-cols-2 w-full mt-2 align-bottom bottom-0"}>
                 <div className={""}>
                     <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
                 </div>
