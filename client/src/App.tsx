@@ -3,7 +3,6 @@ import './App.css';
 import Game from '../components/gameV2/Game';
 import Header from "../components/header/Header";
 import {DiscordSDK, patchUrlMappings} from "@discord/embedded-app-sdk";
-import games from "../games.json";
 import {UserInfo,UserData,GuessInfo,GameInfo} from "../utils/types";
 import StatBar from "../components/stats/StatBar";
 import InfoPanel from "../components/infoPanel/InfoPanel";
@@ -12,11 +11,6 @@ import {inject} from "@vercel/analytics";
 // @ts-ignore
 import logo from "./images.png";
 
-type GameDataType = {
-    image:string;
-    price:string;
-    name:string;
-}
 inject();
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
@@ -181,14 +175,18 @@ function App() {
         setupDiscordSdk().then((token) => {
             console.log("Discord SDK is ready");
             setToken(token);
-        })
-        ;},[])
+        }).catch(r=>{
+            console.log("failed to set up discord sdk")
+        });
+        },[])
 
     useEffect(() => {
         if (token.length>0) {
-            getDate().then(d => {
-                parseGame(d);
-            });
+            parseGame().then(r=>{
+                console.log("game info retrieved")
+            }).catch(r=>{
+                console.log("failed to retrieve game info")
+            })
             getUser(token).then(u => {
                 console.log("user done")
                 getUserCurrent(u.userID).then(g => {
@@ -199,45 +197,48 @@ function App() {
                         guessInfo: g
                     }
                     setUserData(temp)
+                }).catch(reason => {
+                    console.log("failed to get current user info")
                 });
                 if (discordSdk.channelId) {
                     getChannel(discordSdk.channelId).then(cUsers => {
                         console.log(cUsers);
                         console.log("channel done");
                         setUsers(cUsers);
+                    }).catch(r=>{
+                        console.log("failed to get channel info")
                     })
                 } else {
                     console.log("no channel");
                 }
+            }).catch(r=>{
+                console.log("failed to retrieve user token")
             });
         }
     }, [token]);
 
 
-    async function getDate() {
-        const response = await fetch("/api/date", {
-            method: 'GET'
-        })
-        const {date} = await response.json();
-        console.log(date);
-        console.log("date");
-        return date
-    }
-
-    function parseGame(date:number){
+    async function parseGame(){
         const protocol = `https`;
         const clientId = '1445980061390999564';
         const proxyDomain = 'discordsays.com';
-        const gameObj: {[key: string]: GameDataType} = games
-        const gameI = "game-"+(date%3399).toString();
-        console.log(gameI)
-        const imgURL:string[] = gameObj[gameI].image.split("/")
+
+        const response = await fetch("/api/game",{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+            }
+        })
+        const r = await response.json();
+        let gameObj = r["game"]
+        let date = r["date"]
+        const imgURL:string[] = gameObj.image.split("/")
         const resourcePath = "/img/"+imgURL[imgURL.length-1];
         const url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
         const currentGame:GameInfo = {
             image :url,
-            price :parseFloat(gameObj[gameI].price.substring(1)),
-            name:gameObj[gameI].name,
+            price :parseFloat(gameObj.price.substring(1)),
+            name:gameObj.name,
             date:date
         }
         setGameInfo(currentGame);
