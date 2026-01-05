@@ -250,7 +250,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
             {!completed?
                 <p>Guess #{guessCnt} / 5 guesses</p>
                 :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
-            <div className={"border-black border-2 p-2 bg-white mt-2 h-[200px]"}>
+            <div className={"border-black border-2 p-2 bg-white mt-2"}>
                 <div className={"text-left text-3xl ml-5"}>
                     Game #{gameData.date}
                 </div>
@@ -301,7 +301,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                     </div>
                 </div>
             </div>
-            <div className={"grid grid-cols-2 w-full mt-2"}>
+            <div className={"grid grid-cols-2 w-full mt-2 bottom-0"}>
                 <div className={""}>
                     <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
                 </div>
