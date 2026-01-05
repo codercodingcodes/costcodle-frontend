@@ -297,11 +297,11 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                                 (dec) ?
                                     (<p className={"pl-16 "}>{wn}.{fn}</p>)
                                     :(<p className={"pl-16 "}>{wn}</p>)
-                                :(<p className={"text-3xl"}>Start Typing!</p>)}
+                                :(<p className={"text-3xl mb-2"}>Start Typing!</p>)}
                     </div>
                 </div>
             </div>
-            <div className={"grid grid-cols-2 w-full mt-2 align-bottom bottom-0"}>
+            <div className={"grid grid-cols-2 w-full mt-2"}>
                 <div className={""}>
                     <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
                 </div>
