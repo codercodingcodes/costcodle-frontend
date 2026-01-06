@@ -13,11 +13,6 @@ import * as Sentry from "@sentry/react";
 import logo from "./images.png";
 
 inject();
-if (Sentry.isEnabled()){
-    Sentry.logger.fatal("test")
-}else{
-    console.error("sentry not enabled yet")
-}
 
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
@@ -169,8 +164,19 @@ function App() {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
+        }).then(r=>{
+            if (r.ok){
+                console.log("user data retrieved")
+                return r
+            }else{
+                discordSdk.close(4000,"Error loading, Please try again later")
+                console.error("user data failure")
+            }
+        }).catch(r=>{
+            discordSdk.close(4000,"Error loading, Please try again later")
+            console.error("user data failure")
         })
-        const r = await response.json();
+        const r = await response?.json();
         const currentUser:UserInfo = {
             avatar:r["avatar"],
             userID:r["id"],
