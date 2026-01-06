@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "dependencies": {
-    "@sentry/react": "^8.0.0",
+    "@sentry/react": "^10.32.1",
     "@radix-ui/colors": "github:radix-ui/colors",
     "@stitches/react": "^1.2.8",
     "@tailwindcss/vite": "^4.1.17",
