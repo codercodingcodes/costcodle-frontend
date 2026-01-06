@@ -177,7 +177,7 @@ function App() {
             console.log("Discord SDK is ready");
             setToken(token);
         }).catch(r=>{
-            Sentry.logger.fatal("failed to set up discord sdk ",r)
+            Sentry.logger.fatal("failed to set up discord sdk")
             console.log("failed to set up discord sdk")
         });
         },[])
@@ -188,7 +188,7 @@ function App() {
                 console.log("game info retrieved")
             })
                 .catch(r=>{
-                Sentry.logger.fatal("failed to retrieve game info ", r)
+                Sentry.logger.fatal("failed to retrieve game info ")
                 console.error("failed to retrieve game info" + r.toString())
             })
             getUser(token).then(u => {
@@ -202,7 +202,7 @@ function App() {
                     }
                     setUserData(temp)
                 }).catch(r => {
-                    Sentry.logger.fatal("failed to get current user " + r.toString())
+                    Sentry.logger.fatal("failed to get current user ")
                     console.error("failed to get current user " + r.toString())
                 });
                 if (discordSdk.channelId) {
@@ -211,14 +211,14 @@ function App() {
                         console.log("channel done");
                         setUsers(cUsers);
                     }).catch(r=>{
-                        Sentry.logger.fatal("failed to get channel info " + r.toString())
+                        Sentry.logger.fatal("failed to get channel info ")
                         console.error("failed to get channel info" + r.toString())
                     })
                 } else {
                     console.log("no channel");
                 }
             }).catch(r=>{
-                Sentry.logger.fatal("failed to get current user token " + r.toString())
+                Sentry.logger.fatal("failed to get current user token ")
                 console.error("failed to retrieve user token " + r.toString())
             });
         }
