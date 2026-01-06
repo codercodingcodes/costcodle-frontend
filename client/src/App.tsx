@@ -12,9 +12,16 @@ import * as Sentry from "@sentry/react";
 // @ts-ignore
 import logo from "./images.png";
 
+Sentry.init({
+    dsn:"https://b57458227a52237b9a973fa466c31d14@o4510660094787584.ingest.us.sentry.io/4510660099112960",
+    tunnel:"/api/tunnel",
+    // Setting this option to true will send default PII data to Sentry.
+    // For example, automatic IP address collection on events
+    sendDefaultPii: true,
+    enableLogs: true,
+});
+
 inject();
-Sentry.logger.fatal("test")
-console.error("test")
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
@@ -154,8 +161,7 @@ function App() {
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
     const [info,setInfo] = useState<boolean>(false);
-
-
+    Sentry.logger.fatal("test")
     async function getUser(token:string){
         console.log("user");
         console.log(token);
