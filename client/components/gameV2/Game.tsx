@@ -5,7 +5,7 @@ import {UserData,GameInfo,UserInfo} from "../../utils/types";
 
 
 async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number){
-    await fetch("/api/guess",{
+    return await fetch("/api/guess",{
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -224,6 +224,8 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                                     console.error("channel update failed")
                                 })
                             }
+                        }).catch(r=>{
+                            console.error("db post failed")
                         })
                         setGuessCnt(guessCnt + 1)
                         setCompleted(completed)
