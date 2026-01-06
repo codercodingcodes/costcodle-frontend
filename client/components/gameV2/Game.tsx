@@ -24,7 +24,7 @@ async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:b
 }
 
 async function updateChannel(channelID:string,userID:string){
-    await fetch("/api/channel",{
+    return await fetch("/api/channel",{
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -60,7 +60,15 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
         console.log("avatar retrieved")
         setFreshUser(user);
         if (user.userInfo.channelID) {
-            updateChannel(user.userInfo.channelID, user.userInfo.userID)
+            updateChannel(user.userInfo.channelID, user.userInfo.userID).then(r => {
+                if (r.ok){
+                    console.log("channel updated")
+                } else{
+                    console.error("channel update failed")
+                }
+            }).catch(r=>{
+                console.error("channel update failed")
+            })
         }
     }, [user]);
 
@@ -206,7 +214,15 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                         sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt).then(r => {
                             console.log("guess sent")
                             if (user.userInfo.channelID) {
-                                updateChannel(user.userInfo.channelID, user.userInfo.userID)
+                                updateChannel(user.userInfo.channelID, user.userInfo.userID).then(r => {
+                                    if (r.ok){
+                                        console.log("channel updated")
+                                    } else{
+                                        console.error("channel update failed")
+                                    }
+                                }).catch(r=>{
+                                    console.error("channel update failed")
+                                })
                             }
                         })
                         setGuessCnt(guessCnt + 1)
