@@ -13,6 +13,7 @@ import * as Sentry from "@sentry/react";
 import logo from "./images.png";
 
 inject();
+Sentry.logger.fatal("test")
 console.error("test")
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
