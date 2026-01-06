@@ -13,6 +13,7 @@ import * as Sentry from "@sentry/react";
 import logo from "./images.png";
 
 inject();
+console.error("test")
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
@@ -65,6 +66,7 @@ async function setupDiscordSdk() {
             code,
         }),
     }).catch(()=>{
+        console.error("auth failure")
         discordSdk.close(4000,"Error loading, Please try again later")
     });
     const { access_token } = await response?.json();
@@ -189,7 +191,8 @@ function App() {
             })
                 .catch(r=>{
                 Sentry.logger.fatal("failed to retrieve game info ")
-                console.error("failed to retrieve game info" + r.toString())
+                console.error("failed to retrieve game info" + r.toString());
+                discordSdk.close(4000,"Error loading, Please try again later")
             })
             getUser(token).then(u => {
                 console.log("user done")
@@ -204,6 +207,7 @@ function App() {
                 }).catch(r => {
                     Sentry.logger.fatal("failed to get current user ")
                     console.error("failed to get current user " + r.toString())
+                    discordSdk.close(4000,"Error loading, Please try again later")
                 });
                 if (discordSdk.channelId) {
                     getChannel(discordSdk.channelId).then(cUsers => {
@@ -213,6 +217,7 @@ function App() {
                     }).catch(r=>{
                         Sentry.logger.fatal("failed to get channel info ")
                         console.error("failed to get channel info" + r.toString())
+                        discordSdk.close(4000,"Error loading, Please try again later")
                     })
                 } else {
                     console.log("no channel");
@@ -220,6 +225,7 @@ function App() {
             }).catch(r=>{
                 Sentry.logger.fatal("failed to get current user token ")
                 console.error("failed to retrieve user token " + r.toString())
+                discordSdk.close(4000,"Error loading, Please try again later")
             });
         }
     }, [token]);
