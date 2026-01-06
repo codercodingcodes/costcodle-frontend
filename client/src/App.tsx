@@ -177,7 +177,7 @@ function App() {
             console.log("Discord SDK is ready");
             setToken(token);
         }).catch(r=>{
-            Sentry.logger.fatal("failed to set up discord sdk " + r.toString())
+            Sentry.logger.fatal("failed to set up discord sdk ",r)
             console.log("failed to set up discord sdk")
         });
         },[])
@@ -188,7 +188,7 @@ function App() {
                 console.log("game info retrieved")
             })
                 .catch(r=>{
-                Sentry.logger.fatal("failed to retrieve game info " + r.toString())
+                Sentry.logger.fatal("failed to retrieve game info ", r)
                 console.error("failed to retrieve game info" + r.toString())
             })
             getUser(token).then(u => {
@@ -229,7 +229,6 @@ function App() {
         const protocol = `https`;
         const clientId = '1445980061390999564';
         const proxyDomain = 'discordsays.com';
-
         const response = await fetch("/api/game",{
             method: 'GET',
             headers:{
@@ -237,6 +236,8 @@ function App() {
             }
         })
         const r = await response.json();
+        console.log("gameinfo working");
+        console.log(r);
         let gameObj = r["game"]
         let date = r["date"]
         const imgURL:string[] = gameObj.image.split("/")
