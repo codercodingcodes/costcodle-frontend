@@ -3,6 +3,7 @@ interface UserInfo {
     avatar:string;
     userID:string;
     channelID:string|null;
+    guessHistory:GuessHistory;
     [key: string]: unknown;
 }
 export type GameInfo = {
@@ -16,6 +17,12 @@ export type GuessInfo = {
     lGuess:number;
     guessCnt:number;
     completed:boolean;
+}
+export type GuessHistory = {
+    gamesPlayed:number;
+    gamesCompleted:number;
+    averageGuess:number;
+    firstTries:number;
 }
 export type UserData = {
     userInfo:UserInfo;

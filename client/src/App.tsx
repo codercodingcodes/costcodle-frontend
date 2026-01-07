@@ -3,7 +3,7 @@ import './App.css';
 import Game from '../components/gameV2/Game';
 import Header from "../components/header/Header";
 import {DiscordSDK, patchUrlMappings} from "@discord/embedded-app-sdk";
-import {UserInfo,UserData,GuessInfo,GameInfo} from "../utils/types";
+import {UserInfo,UserData,GuessInfo,GameInfo,GuessHistory} from "../utils/types";
 import StatBar from "../components/stats/StatBar";
 import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
@@ -116,6 +116,12 @@ async function getChannel(channelID:string){
             avatar:current[9],
             userID:current[1],
             channelID:discordSdk.channelId,
+            guessHistory:{
+                gamesCompleted:0,
+                gamesPlayed:0,
+                averageGuess:0,
+                firstTries:0
+            }
         }
         cUsers.push({
             userInfo:u,
@@ -125,10 +131,9 @@ async function getChannel(channelID:string){
     return cUsers;
 }
 async function getUserCurrent(userID:string){
-    const params = {
-        userID:userID
-    }
-    const response = await fetch("/api/guess?" + new URLSearchParams(params).toString(),{
+    const params = new URLSearchParams();
+    params.append('userID', userID);
+    const response = await fetch("/api/guess?" + params.toString(),{
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -154,7 +159,54 @@ async function getUserCurrent(userID:string){
     }
     return prevGuess;
 }
+async function getUsersHistory(usersData:UserData[]){
+    const params = new URLSearchParams();
+    let userDict:{[key:string]:UserData} = {}
+    for (let i = 0; i < usersData.length; i++) {
+        params.append('userID',usersData[i].userInfo.userID)
+        userDict[usersData[i].userInfo.userID] = usersData[i]
+    }
 
+    const response = await fetch('/api/guess?'+params.toString(),{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(r=>{
+        if (r.ok){
+            return r;
+        }else {
+            console.error("users history failure")
+            discordSdk.close(4000,"Error loading please try again")
+        }
+    })
+    const r = await response?.json();
+    console.log(r.data);
+    console.log("users history retrieved");
+
+    for (let i = 1; i < r.length; i++) {
+        const userID:string = r[i][1]
+        const gameCompleted:boolean = r[i][6]
+        const guessCnt:number = r[i][5]+1
+        let current = userDict[userID].userInfo.guessHistory
+        current.gamesPlayed ++
+        if (gameCompleted){
+            current.gamesCompleted ++
+        }
+        current.averageGuess += guessCnt
+        if (guessCnt === 1){
+            current.firstTries ++
+        }
+    }
+    for (let i = 1; i < usersData.length; i++) {
+        let current = usersData[i].userInfo.guessHistory
+        current.averageGuess = current.averageGuess/current.gamesPlayed
+    }
+    console.log("users history calculated");
+    console.log(usersData);
+    return usersData
+
+}
 function App() {
     const [token,setToken]=useState("");
     const [users,setUsers] = useState<UserData[]>([]);
@@ -190,7 +242,13 @@ function App() {
             avatar:r["avatar"],
             userID:r["id"],
             username:r["username"],
-            channelID:discordSdk.channelId
+            channelID:discordSdk.channelId,
+            guessHistory:{
+                gamesCompleted:0,
+                gamesPlayed:0,
+                averageGuess:0,
+                firstTries:0
+            }
         }
         return currentUser;
     }
@@ -233,7 +291,12 @@ function App() {
                     getChannel(discordSdk.channelId).then(cUsers => {
                         console.log(cUsers);
                         console.log("channel done");
-                        setUsers(cUsers);
+                        getUsersHistory(cUsers).then(us =>{
+                            console.log("user history populated");
+                            setUsers(us);
+                        }).catch(r=>{
+                            console.error("failed to populate user history")
+                        })
                     }).catch(r=>{
                         Sentry.logger.fatal("failed to get channel info ")
                         console.error("failed to get channel info" + r.toString())
