@@ -28,6 +28,9 @@ function StatCell({user,price}:{user:UserData,price:number}) {
             <div className={"grid grid-cols-5 w-full bg-gray-300 m-auto "}>
                 {progress}
             </div>
+            <p>Games Played: {user.userInfo.guessHistory.gamesPlayed}</p>
+            <p>Games Completed: {user.userInfo.guessHistory.gamesCompleted}</p>
+            <p>Average Daily Guesses: {user.userInfo.guessHistory.averageGuess}</p>
         </div>
     );
 }
