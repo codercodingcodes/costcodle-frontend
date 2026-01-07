@@ -181,7 +181,7 @@ async function getUsersHistory(usersData:UserData[]){
         }
     })
     const r = await response?.json();
-    console.log(r.data);
+    console.log(r);
     console.log("users history retrieved");
 
     for (let i = 1; i < r.length; i++) {
