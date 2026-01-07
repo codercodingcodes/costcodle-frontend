@@ -133,6 +133,7 @@ async function getChannel(channelID:string){
 async function getUserCurrent(userID:string){
     const params = new URLSearchParams();
     params.append('userID', userID);
+    params.append('getHistory','false')
     const response = await fetch("/api/guess?" + params.toString(),{
         method: "GET",
         headers: {
@@ -161,6 +162,7 @@ async function getUserCurrent(userID:string){
 }
 async function getUsersHistory(usersData:UserData[]){
     const params = new URLSearchParams();
+    params.append('getHistory','true')
     let userDict:{[key:string]:UserData} = {}
     for (let i = 0; i < usersData.length; i++) {
         params.append('userID',usersData[i].userInfo.userID)
