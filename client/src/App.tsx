@@ -289,12 +289,17 @@ function App() {
                     getChannel(discordSdk.channelId).then(cUsers => {
                         console.log(cUsers);
                         console.log("channel done");
-                        getUsersHistory(cUsers).then(us =>{
-                            console.log("user history populated");
-                            setUsers(us);
-                        }).catch(r=>{
-                            console.error("failed to populate user history")
-                        })
+                        if (cUsers.length>0) {
+                            getUsersHistory(cUsers).then(us => {
+                                console.log("user history populated");
+                                setUsers(us);
+                            }).catch(r => {
+                                console.error("failed to populate user history")
+                            })
+                        }else {
+                            console.log("no user history");
+                            setUsers(cUsers)
+                        }
                     }).catch(r=>{
                         Sentry.logger.fatal("failed to get channel info ")
                         console.error("failed to get channel info" + r.toString())
