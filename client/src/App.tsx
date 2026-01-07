@@ -119,7 +119,7 @@ async function getChannel(channelID:string){
             guessHistory:{
                 gamesCompleted:0,
                 gamesPlayed:0,
-                averageGuess:0,
+                totalGuesses:0,
                 firstTries:0
             }
         }
@@ -195,14 +195,10 @@ async function getUsersHistory(usersData:UserData[]){
         if (gameCompleted){
             current.gamesCompleted ++
         }
-        current.averageGuess += guessCnt
+        current.totalGuesses += guessCnt
         if (guessCnt === 1){
             current.firstTries ++
         }
-    }
-    for (let i = 1; i < usersData.length; i++) {
-        let current = usersData[i].userInfo.guessHistory
-        current.averageGuess = current.averageGuess/current.gamesPlayed
     }
     console.log("users history calculated");
     console.log(usersData);
@@ -248,7 +244,7 @@ function App() {
             guessHistory:{
                 gamesCompleted:0,
                 gamesPlayed:0,
-                averageGuess:0,
+                totalGuesses:0,
                 firstTries:0
             }
         }

@@ -21,7 +21,7 @@ export type GuessInfo = {
 export type GuessHistory = {
     gamesPlayed:number;
     gamesCompleted:number;
-    averageGuess:number;
+    totalGuesses:number;
     firstTries:number;
 }
 export type UserData = {
