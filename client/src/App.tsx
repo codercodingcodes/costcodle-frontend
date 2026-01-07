@@ -82,6 +82,7 @@ async function setupDiscordSdk() {
     }
     return access_token;
 }
+
 async function getChannel(channelID:string){
     const params = {
         channelID:channelID
