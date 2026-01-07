@@ -151,7 +151,7 @@ async function getUserCurrent(userID:string){
     }
     if (query.length > 0) {
         const guess = query[0];
-        prevGuess.guessCnt = guess[5]+1;
+        prevGuess.guessCnt = guess[5];
         prevGuess.hGuess = parseFloat(guess[2]);
         prevGuess.lGuess = parseFloat(guess[3]);
         prevGuess.completed = guess[6];
@@ -189,7 +189,7 @@ async function getUsersHistory(usersData:UserData[]){
     for (let i = 1; i < r.length; i++) {
         const userID:string = r[i][1]
         const gameCompleted:boolean = r[i][6]
-        const guessCnt:number = r[i][5]+1
+        const guessCnt:number = r[i][5]
         let current = userDict[userID].userInfo.guessHistory
         current.gamesPlayed ++
         if (gameCompleted){
