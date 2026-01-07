@@ -9,7 +9,7 @@ import cross from "./Red_X.svg.png";
 function StatCell({user,price}:{user:UserData,price:number}) {
     const progress = [];
 
-    for (let i=0;i<=Math.min(user.guessInfo.guessCnt,4);i++){
+    for (let i=1;i<=Math.min(user.guessInfo.guessCnt,5);i++){
         if (user.guessInfo.completed && i == user.guessInfo.guessCnt) {
             progress.push(<img src={checkMark} className={"w-[20px] h-[20px]"}/>)
         } else{

@@ -270,7 +270,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
             </div>
                 :<div></div>}
             {!completed?
-                <p>Guess #{guessCnt} / 5 guesses</p>
+                <p>Guess #{guessCnt} / 5</p>
                 :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
             <div className={"border-black border-2 p-2 bg-white mt-2"}>
                 <div className={"text-left text-3xl ml-5"}>

@@ -29,16 +29,16 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                     The game will tell you how close your guess is to the actual price via color
                 </p>
                 <p className={"mt-[10px]"}>
-                    RED means that your guess is close! Keep making minor adjustments to your price and you will get it soon
+                    <a className={"bg-red-600"}>RED</a> means that your guess is close! Keep making minor adjustments to your price and you will get it soon
                 </p>
                 <p className={"mt-[10px]"}>
-                    YELLOW means that your guess is not quite in the ball park yet and you might need to make some bigger changes to your guesses
+                    <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is not quite in the ball park yet and you might need to make some bigger changes to your guesses
                 </p>
                 <p className={"mt-[10px]"}>
-                    The item changes daily and you can see the performance of other uses in your channel when you click on the "Stats" in the header
+                    The item changes daily and you can see the performance of other users in your channel when you click on the "Friends" in the header
                 </p>
                 <p className={"mt-[10px]"}>
-                    Press the X on the top right corner of this page or the stats button on the header to close this screen and return to your game
+                    Press the X on the top right corner of this page or the Friends button on the header to close this screen and return to your game
                 </p>
             </div>
         </div>
