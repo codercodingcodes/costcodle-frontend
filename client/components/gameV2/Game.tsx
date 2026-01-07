@@ -319,7 +319,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                                 (dec) ?
                                     (<p className={"pl-16 "}>{wn}.{fn}</p>)
                                     :(<p className={"pl-16 "}>{wn}</p>)
-                                :(<p className={"text-3xl mb-8"}>Start Typing!</p>)}
+                                :(<p className={"text-3xl mb-9"}>Start Typing!</p>)}
                     </div>
                 </div>
             </div>
