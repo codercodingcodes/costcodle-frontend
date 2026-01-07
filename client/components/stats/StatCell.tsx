@@ -21,7 +21,7 @@ function StatCell({user,price}:{user:UserData,price:number}) {
     console.log("correct");
     console.log(user);
     return (
-        <div className="inline-block rounded-xl border-gray-400 border-solid border-2 bg-gray-100 p-2 mr-1 font-serif w-[200px]">
+        <div className="inline-block rounded-xl border-gray-400 border-solid border-2 bg-gray-100 p-2 mr-1 font-serif w-[300px]">
 
             <img src={"https://cdn.discordapp.com/avatars/"+user.userInfo.userID+"/"+user.userInfo.avatar+".png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>
             {user.userInfo.username}
