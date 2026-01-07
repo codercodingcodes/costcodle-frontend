@@ -65,6 +65,14 @@ async function setupDiscordSdk() {
         body: JSON.stringify({
             code,
         }),
+    }).then(r=>{
+        if (r.ok){
+            console.log("auth success")
+            return r
+        }else {
+            console.error("auth failure")
+            discordSdk.close(4000,"Error loading, Please try again later")
+        }
     }).catch(()=>{
         console.error("auth failure")
         discordSdk.close(4000,"Error loading, Please try again later")
