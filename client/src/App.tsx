@@ -187,6 +187,7 @@ async function getUsersHistory(usersData:UserData[]){
     console.log("users history retrieved");
 
     for (let i = 1; i < r.length; i++) {
+        console.log(r[i][8])
         const userID:string = r[i][1]
         const gameCompleted:boolean = r[i][6]
         const guessCnt:number = r[i][5]
@@ -197,6 +198,7 @@ async function getUsersHistory(usersData:UserData[]){
         }
         current.totalGuesses += guessCnt
         if (guessCnt === 1){
+            console.log("first try")
             current.firstTries ++
         }
     }
