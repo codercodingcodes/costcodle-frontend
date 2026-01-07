@@ -186,7 +186,7 @@ async function getUsersHistory(usersData:UserData[]){
     console.log(r);
     console.log("users history retrieved");
 
-    for (let i = 1; i < r.length; i++) {
+    for (let i = 0; i < r.length; i++) {
         console.log(r[i][8])
         const userID:string = r[i][1]
         const gameCompleted:boolean = r[i][6]
