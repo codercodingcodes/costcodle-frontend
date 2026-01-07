@@ -280,7 +280,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                     {gameData.name}
                 </div>
                 {high > 0 && !completed?
-                    (<div className={"grid grid-cols-2 w-full font-sans"} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
+                    (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in"} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
                         :high==0?
                             {backgroundColor:"white"}
                             :{backgroundColor:"red"}}>
@@ -303,7 +303,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                     :<div></div>
                 }
                 {low > 0 && !completed?
-                    (<div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black"} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
+                    (<div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black animate-fade-in"} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
                         :low==0?
                             {backgroundColor:"white"}
                             :{backgroundColor:"red"}}>
