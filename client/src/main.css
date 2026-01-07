@@ -4,7 +4,7 @@
   src: url('../resources/Futura Extra Bold Oblique.otf') format('opentype');
 }
 @theme {
-  --breakpoint-icon: 400px;
+  --breakpoint-icon: 200px;
   --font-costco: "costco", courier;
   --animate-fade: fade 1s linear infinite;
   @keyframes fade {
