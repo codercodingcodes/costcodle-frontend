@@ -214,6 +214,7 @@ function App() {
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
     const [info,setInfo] = useState<boolean>(false);
+    const [update,setUpdate] = useState<number>(0);
 
 
     async function getUser(token:string){
@@ -253,15 +254,43 @@ function App() {
         return currentUser;
     }
     useEffect(() => {
-        setupDiscordSdk().then((token) => {
-            console.log("Discord SDK is ready");
-            setToken(token);
-        }).catch(r=>{
-            Sentry.logger.fatal("failed to set up discord sdk")
-            console.log("failed to set up discord sdk")
-        });
+        if (token.length===0) {
+            setupDiscordSdk().then((token) => {
+                console.log("Discord SDK is ready");
+                setToken(token);
+            }).catch(r => {
+                Sentry.logger.fatal("failed to set up discord sdk")
+                console.error("failed to set up discord sdk")
+            });
+        }
         },[])
-
+    useEffect(() => {
+        discordSdk.ready().then(r=>{
+            if (discordSdk.channelId) {
+                getChannel(discordSdk.channelId).then(cUsers => {
+                    console.log(cUsers);
+                    console.log("channel done");
+                    if (cUsers.length>0) {
+                        getUsersHistory(cUsers).then(us => {
+                            console.log("user history populated");
+                            setUsers(us);
+                        }).catch(r => {
+                            console.error("failed to populate user history")
+                        })
+                    }else {
+                        console.log("no user history");
+                        setUsers(cUsers)
+                    }
+                }).catch(r=>{
+                    Sentry.logger.fatal("failed to get channel info ")
+                    console.error("failed to get channel info" + r.toString())
+                    discordSdk.close(4000,"Error loading, Please try again later")
+                })
+            } else {
+                console.log("no channel");
+            }
+        })
+    }, [update]);
     useEffect(() => {
         if (token.length>0) {
             parseGame().then(r=>{
@@ -287,29 +316,7 @@ function App() {
                     console.error("failed to get current user " + r.toString())
                     discordSdk.close(4000,"Error loading, Please try again later")
                 });
-                if (discordSdk.channelId) {
-                    getChannel(discordSdk.channelId).then(cUsers => {
-                        console.log(cUsers);
-                        console.log("channel done");
-                        if (cUsers.length>0) {
-                            getUsersHistory(cUsers).then(us => {
-                                console.log("user history populated");
-                                setUsers(us);
-                            }).catch(r => {
-                                console.error("failed to populate user history")
-                            })
-                        }else {
-                            console.log("no user history");
-                            setUsers(cUsers)
-                        }
-                    }).catch(r=>{
-                        Sentry.logger.fatal("failed to get channel info ")
-                        console.error("failed to get channel info" + r.toString())
-                        discordSdk.close(4000,"Error loading, Please try again later")
-                    })
-                } else {
-                    console.log("no channel");
-                }
+                forceUpdate()
             }).catch(r=>{
                 Sentry.logger.fatal("failed to get current user token ")
                 console.error("failed to retrieve user token " + r.toString())
@@ -351,6 +358,9 @@ function App() {
     function toggleInfo(){
         setInfo(!info)
     }
+    function forceUpdate(){
+        setUpdate(update+1)
+    }
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
@@ -365,7 +375,7 @@ function App() {
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
-                  <Game user={userData} gameData={gameInfo}/>
+                  <Game user={userData} gameData={gameInfo} update={forceUpdate}/>
                   :<LoadingScreen/>}
           </div>
       </div>

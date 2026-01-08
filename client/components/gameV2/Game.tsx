@@ -40,7 +40,7 @@ async function updateChannel(channelID:string,userID:string){
     })
 }
 
-function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
+function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=>void}) {
     const [gameOver,setGameOver] = useState<boolean>(false);
     const [win,setWin] = useState(false);
     const [msg,setMsg] = useState<string>("");
@@ -233,6 +233,7 @@ function Game({gameData,user}:{gameData:GameInfo,user:UserData}) {
                         })
                         setGuessCnt(guessCnt + 1)
                         setCompleted(completed)
+                        update()
                     }else {
                         setMsg("Please input a value greater than 0")
                     }
