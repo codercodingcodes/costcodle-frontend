@@ -281,14 +281,17 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
                     {gameData.name}
                 </div>
                 {high > 0 && !completed?
-                    (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in"} key={high} style={guessDistance(high) === 2? {backgroundColor:"yellow"}
-                        :high==0?
-                            {backgroundColor:"white"}
-                            :{backgroundColor:"red"}}>
-                        <p className={"text-left font-bold text-sm"}>Price Is Less Than</p>
-                        {(high>0) ?<p className={"text-right text-xl"}>{high}</p>
-                        :<p></p>}
-                    </div>)
+                    guessDistance(high) === 2?
+                        (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={high} >
+                            <p className={"text-left font-bold text-sm"}>Cold</p>
+                            {(high>0) ?<p className={"text-right text-xl"}> &lt {high}</p>
+                                :<p></p>}
+                        </div>)
+                        :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={high} >
+                            <p className={"text-left font-bold text-sm"}>Warm</p>
+                            {(high>0) ?<p className={"text-right text-xl"}>&lt {high}</p>
+                                :<p></p>}
+                        </div>)
                     :<div></div>}
                 {!gameOver && !mobileCheck()?
                     <input
@@ -304,14 +307,17 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
                     :<div></div>
                 }
                 {low > 0 && !completed?
-                    (<div className={"grid grid-cols-2 w-full mt-1 font-sans border-solid border-b-2 border-black animate-fade-in"} key={low} style={guessDistance(low) === 2? {backgroundColor:"yellow"}
-                        :low==0?
-                            {backgroundColor:"white"}
-                            :{backgroundColor:"red"}}>
-                        <p className={"text-left font-bold text-sm"}>Price Is More Than</p>
-                        {(low>0) ?<p className={"text-right text-xl"}>{low}</p>
-                            :<p></p>}
-                    </div>)
+                    guessDistance(low) === 2?
+                        (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={low} >
+                            <p className={"text-left font-bold text-sm"}>Cold</p>
+                            {(low>0) ?<p className={"text-right text-xl"}> &gt {low}</p>
+                                :<p></p>}
+                        </div>)
+                        :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={low} >
+                            <p className={"text-left font-bold text-sm"}>Warm</p>
+                            {(low>0) ?<p className={"text-right text-xl"}>&gt {low}</p>
+                                :<p></p>}
+                        </div>)
                     :<div></div>}
                 <div className={"flex justify-end items-end"}>
                     <div className={"text-7xl font-bold"}>

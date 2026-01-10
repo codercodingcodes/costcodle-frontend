@@ -215,6 +215,7 @@ function App() {
     const [statbar,setStatBar] = useState<boolean>(false);
     const [info,setInfo] = useState<boolean>(false);
     const [update,setUpdate] = useState<number>(0);
+    const [time,setTime] = useState<number>(0);
 
 
     async function getUser(token:string){
@@ -341,6 +342,7 @@ function App() {
         console.log(r);
         let gameObj = r["game"]
         let date = r["date"]
+        let time = r["time"]
         const imgURL:string[] = gameObj.image.split("/")
         const resourcePath = "/img/"+imgURL[imgURL.length-1];
         const url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
@@ -351,6 +353,7 @@ function App() {
             date:date
         }
         setGameInfo(currentGame);
+        setTime(time);
     }
     function toggleStat(){
         setStatBar(!statbar)
@@ -375,7 +378,10 @@ function App() {
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
-                  <Game user={userData} gameData={gameInfo} update={forceUpdate}/>
+                  <>
+                      <p>Next game in : {Math.floor(time / 3600)} hrs</p>
+                      <Game user={userData} gameData={gameInfo} update={forceUpdate}/>
+                  </>
                   :<LoadingScreen/>}
           </div>
       </div>
