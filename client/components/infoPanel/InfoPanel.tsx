@@ -11,6 +11,15 @@ function InfoPanel({toggle}:{toggle:() => void }) {
             </button>
             <div className={"wrap-break-word overflow-scroll text-center font-serif h-full w-full"}>
                 <p className={"mt-[10px]"}>
+                    The purpose of this game is to guess the price($USD) of the Costco item listed
+                </p>
+                <p className={"mt-[10px]"}>
+                    <a className={"bg-red-600"}>RED</a> means that your guess is close! Keep making minor adjustments to your price and you will get it soon
+                </p>
+                <p className={"mt-[10px] w-full border-gray-200 border-b-1 border-solid" }>
+                    <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is not quite in the ball park yet and you might need to make some bigger changes to your guesses
+                </p>
+                <p className={"mt-[10px]"}>
                     DISCLOSURE!! This game was NOT invented by me but by @KermWasTaken and I merely adapted it to the discord format.
                 </p>
                 <p className={"mt-[10px]"}>
@@ -20,19 +29,10 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                     https://costcodle.com/
                 </p>
                 <p className={"mt-[10px]"}>
-                    The purpose of this game is to guess the price($USD) of the Costco item listed
-                </p>
-                <p className={"mt-[10px]"}>
                     You get 5 guesses per day to guess the price of the item
                 </p>
                 <p className={"mt-[10px]"}>
                     The game will tell you how close your guess is to the actual price via color
-                </p>
-                <p className={"mt-[10px]"}>
-                    <a className={"bg-red-600"}>RED</a> means that your guess is close! Keep making minor adjustments to your price and you will get it soon
-                </p>
-                <p className={"mt-[10px]"}>
-                    <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is not quite in the ball park yet and you might need to make some bigger changes to your guesses
                 </p>
                 <p className={"mt-[10px]"}>
                     The item changes daily and you can see the performance of other users in your channel when you click on the "Friends" in the header
