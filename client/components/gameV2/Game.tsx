@@ -1,6 +1,7 @@
-import React, {use, useEffect, useRef} from 'react';
+import React, { useEffect, useRef} from 'react';
 import GuessInput from "../guessInput/GuessInput";
 import { useState } from 'react';
+import WinScreen from "../WinScreen/WinScreen";
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 
 
@@ -55,6 +56,7 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
     const [guessCnt,setGuessCnt] = useState(0);
     const [freshUser,setFreshUser] = useState(user);
     const [completed,setCompleted] = useState(false);
+    const [winScreen,setWinScreen] = useState(false);
 
     const userInput = useRef<HTMLInputElement>(null);
     const alert = useRef<HTMLDivElement>(null);
@@ -100,7 +102,11 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
             setMsg("better luck tomorrow");
         }
     }, [gameOver]);
-
+    useEffect(()=>{
+        if (win){
+            setWinScreen(true);
+        }
+    },[win])
     useEffect(() => {
         if (msgTimer === 0){
             setMsg("")
@@ -261,86 +267,95 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
             }
         }
     }
+    function toggleWin(){
+        setWinScreen(false)
+    }
     return (
-        <div className='p-1 md:w-1/3 m-auto font-serif '>
-            {(msgTimer>0 && msg.length>0)?
-            <div className={"bg-gray-300 block w-1/2 md:w-1/4 fixed top-50 left-1/2 -translate-x-1/2 wrap-normal text-center border-gray-500 border-2 rounded-2xl"} ref={alert}>
-                <p>
-                    {msg}
-                </p>
-            </div>
-                :<div></div>}
-            {!completed?
-                <p>Guess #{guessCnt} / 5</p>
-                :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
-            <div className={"border-black border-2 p-2 bg-white mt-2"}>
-                <div className={"text-left text-3xl ml-5"}>
-                    Game #{gameData.date}
+        <>
+            winScreen?
+            <WinScreen guessCnt={guessCnt} time={gameData.time} toggle={toggleWin}/>
+            :<div></div>
+            <div className='p-1 md:w-1/3 m-auto font-serif '>
+                {(msgTimer>0 && msg.length>0)?
+                <div className={"bg-gray-300 block w-1/2 md:w-1/4 fixed top-50 left-1/2 -translate-x-1/2 wrap-normal text-center border-gray-500 border-2 rounded-2xl"} ref={alert}>
+                    <p>
+                        {msg}
+                    </p>
                 </div>
-                <div className={"text-left text-2xl"}>
-                    {gameData.name}
-                </div>
-                {high > 0 && !completed?
-                    guessDistance(high) === 2?
-                        (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={high} >
-                            <p className={"text-left font-bold text-sm"}>Cold</p>
-                            {(high>0) ?<p className={"text-right text-xl"}> &lt {high}</p>
-                                :<p></p>}
-                        </div>)
-                        :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={high} >
-                            <p className={"text-left font-bold text-sm"}>Warm</p>
-                            {(high>0) ?<p className={"text-right text-xl"}>&lt {high}</p>
-                                :<p></p>}
-                        </div>)
                     :<div></div>}
-                {!gameOver && !mobileCheck()?
-                    <input
-                        type="text"
-                        onKeyDown={handleKeyDown}
-                        placeholder="Press here..."
-                        autoFocus={true}
-                        onFocus={() => setHasFocus(true)}
-                        onBlur={() => setHasFocus(false)}
-                        ref={userInput}
-                        className={"h-0 w-0 sm:hidden md:block"}
-                    />
-                    :<div></div>
-                }
-                {low > 0 && !completed?
-                    guessDistance(low) === 2?
-                        (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={low} >
-                            <p className={"text-left font-bold text-sm"}>Cold</p>
-                            {(low>0) ?<p className={"text-right text-xl"}> &gt {low}</p>
-                                :<p></p>}
-                        </div>)
-                        :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={low} >
-                            <p className={"text-left font-bold text-sm"}>Warm</p>
-                            {(low>0) ?<p className={"text-right text-xl"}>&gt {low}</p>
-                                :<p></p>}
-                        </div>)
-                    :<div></div>}
-                <div className={"flex justify-end items-end"}>
-                    <div className={"text-7xl font-bold"}>
-                        {(gameOver)?<p>{gameData.price}</p>
-                            :(wn>0 || fn>0 || dec)?
-                                (dec) ?
-                                    (<p className={"pl-16 "}>{wn}.{fn}</p>)
-                                    :(<p className={"pl-16 "}>{wn}</p>)
-                                :(<p className={"text-3xl mb-9"}>Start Typing!</p>)}
+                <p>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
+                {!completed?
+                    <p>Guess #{guessCnt} / 5</p>
+                    :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
+                <div className={"border-black border-2 p-2 bg-white mt-2"}>
+                    <div className={"text-left text-3xl ml-5"}>
+                        Game #{gameData.date}
+                    </div>
+                    <div className={"text-left text-2xl"}>
+                        {gameData.name}
+                    </div>
+                    {high > 0 && !completed?
+                        guessDistance(high) === 2?
+                            (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={high} >
+                                <p className={"text-left font-bold text-sm"}>Cold</p>
+                                {(high>0) ?<p className={"text-right text-xl"}> &lt {high}</p>
+                                    :<p></p>}
+                            </div>)
+                            :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={high} >
+                                <p className={"text-left font-bold text-sm"}>Warm</p>
+                                {(high>0) ?<p className={"text-right text-xl"}>&lt {high}</p>
+                                    :<p></p>}
+                            </div>)
+                        :<div></div>}
+                    {!gameOver && !mobileCheck()?
+                        <input
+                            type="text"
+                            onKeyDown={handleKeyDown}
+                            placeholder="Press here..."
+                            autoFocus={true}
+                            onFocus={() => setHasFocus(true)}
+                            onBlur={() => setHasFocus(false)}
+                            ref={userInput}
+                            className={"h-0 w-0 sm:hidden md:block"}
+                        />
+                        :<div></div>
+                    }
+                    {low > 0 && !completed?
+                        guessDistance(low) === 2?
+                            (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={low} >
+                                <p className={"text-left font-bold text-sm"}>Cold</p>
+                                {(low>0) ?<p className={"text-right text-xl"}> &gt {low}</p>
+                                    :<p></p>}
+                            </div>)
+                            :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={low} >
+                                <p className={"text-left font-bold text-sm"}>Warm</p>
+                                {(low>0) ?<p className={"text-right text-xl"}>&gt {low}</p>
+                                    :<p></p>}
+                            </div>)
+                        :<div></div>}
+                    <div className={"flex justify-end items-end"}>
+                        <div className={"text-7xl font-bold"}>
+                            {(gameOver)?<p>{gameData.price}</p>
+                                :(wn>0 || fn>0 || dec)?
+                                    (dec) ?
+                                        (<p className={"pl-16 "}>{wn}.{fn}</p>)
+                                        :(<p className={"pl-16 "}>{wn}</p>)
+                                    :(<p className={"text-3xl mb-9"}>Start Typing!</p>)}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className={"grid grid-cols-2 w-full mt-2"}>
-                <div className={""}>
-                    <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
-                </div>
-                {!gameOver?
-                    <div className={"w-full mt-2 m-auto h-full"}>
-                        <GuessInput setVal={(x)=>updateVal(x)}/>
+                <div className={"grid grid-cols-2 w-full mt-2"}>
+                    <div className={""}>
+                        <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
                     </div>
-                    :<div></div>}
+                    {!gameOver?
+                        <div className={"w-full mt-2 m-auto h-full"}>
+                            <GuessInput setVal={(x)=>updateVal(x)}/>
+                        </div>
+                        :<div></div>}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

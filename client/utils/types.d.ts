@@ -11,6 +11,7 @@ export type GameInfo = {
     price:number;
     date?:number;
     name:string;
+    time:number;
 }
 export type GuessInfo = {
     hGuess:number;
