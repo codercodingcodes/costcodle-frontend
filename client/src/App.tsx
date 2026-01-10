@@ -377,7 +377,7 @@ function App() {
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
-                  <Game user={userData} gameData={gameInfo} update={forceUpdate}/>
+                  <Game user={userData} gameData={gameInfo} update={forceUpdate} users={users}/>
                   :<LoadingScreen/>}
           </div>
       </div>

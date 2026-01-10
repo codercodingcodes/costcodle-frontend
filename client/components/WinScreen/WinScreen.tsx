@@ -2,12 +2,19 @@
 import React from 'react';
 // @ts-ignore
 import loading from './membership-card-business.png';
+import {GameInfo, UserData} from "../../utils/types";
+import StatCell from "../stats/StatCell";
 
-function WinScreen({guessCnt,time,toggle}:{guessCnt:number,time:number,toggle:()=>void}) {
+function WinScreen({guessCnt,gameData,toggle,users}:{guessCnt:number,gameData:GameInfo,toggle:()=>void,users:UserData[]}) {
     return (
-        <div className="w-full h-full text-center bg-gray-200 fixed">
+        <div className="w-full h-full text-center bg-gray-100 fixed">
+            <div className="flex flex-row flex-nowrap overflow-auto fixed w-full bg-gray-100 pt-20 md:pt-2 p-2 top-[50px] border-black border-solid border-b-1">
+                {users.map((user:UserData) => (
+                    <StatCell user={user} price={gameData.price} />
+                ))}
+            </div>
             <p className={"absolute font-costco text-red-600 text-4xl top-1/2 left-1/2 -translate-x-1/2"}>Congrats! You got today's item in {guessCnt} tries!</p>
-            <p className={"absolute font-costco  text-2xl top-3/4 left-1/2 -translate-x-1/2"}>Next game in : {24-Math.floor(time / 3600)} hrs</p>
+            <p className={"absolute font-costco  text-2xl top-3/4 left-1/2 -translate-x-1/2"}>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
             <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
                 <p className={"-translate-y-[14px]"}>
                     x

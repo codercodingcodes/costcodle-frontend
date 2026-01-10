@@ -41,7 +41,7 @@ async function updateChannel(channelID:string,userID:string){
     })
 }
 
-function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=>void}) {
+function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,update:()=>void,users:UserData[]}) {
     const [gameOver,setGameOver] = useState<boolean>(false);
     const [win,setWin] = useState(false);
     const [msg,setMsg] = useState<string>("");
@@ -273,7 +273,7 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
     return (
         <>
         {winScreen?
-            <WinScreen guessCnt={guessCnt} time={gameData.time} toggle={toggleWin}/>
+            <WinScreen guessCnt={guessCnt} gameData={gameData} toggle={toggleWin} users={users}/>
             :<div></div>}
             <div className='p-1 md:w-1/3 m-auto font-serif '>
                 {(msgTimer>0 && msg.length>0)?
