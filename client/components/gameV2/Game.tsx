@@ -298,12 +298,12 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
                         guessDistance(high) === 2?
                             (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={high} >
                                 <p className={"text-left font-bold text-sm"}>Cold</p>
-                                {(high>0) ?<p className={"text-right text-xl"}> &lt; {high}</p>
+                                {(high>0) ?<p className={"text-right text-xl"}> Price is &lt; {high}</p>
                                     :<p></p>}
                             </div>)
                             :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={high} >
                                 <p className={"text-left font-bold text-sm"}>Warm</p>
-                                {(high>0) ?<p className={"text-right text-xl"}> &lt; {high}</p>
+                                {(high>0) ?<p className={"text-right text-xl"}> Price is &lt; {high}</p>
                                     :<p></p>}
                             </div>)
                         :<div></div>}
@@ -324,12 +324,12 @@ function Game({gameData,user,update}:{gameData:GameInfo,user:UserData,update:()=
                         guessDistance(low) === 2?
                             (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={low} >
                                 <p className={"text-left font-bold text-sm"}>Cold</p>
-                                {(low>0) ?<p className={"text-right text-xl"}> &gt; {low}</p>
+                                {(low>0) ?<p className={"text-right text-xl"}> Price is &gt; {low}</p>
                                     :<p></p>}
                             </div>)
                             :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={low} >
                                 <p className={"text-left font-bold text-sm"}>Warm</p>
-                                {(low>0) ?<p className={"text-right text-xl"}> &gt; {low}</p>
+                                {(low>0) ?<p className={"text-right text-xl"}> Price is &gt; {low}</p>
                                     :<p></p>}
                             </div>)
                         :<div></div>}
