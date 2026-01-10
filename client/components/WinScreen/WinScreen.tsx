@@ -13,8 +13,8 @@ function WinScreen({guessCnt,gameData,toggle,users}:{guessCnt:number,gameData:Ga
                     <StatCell user={user} price={gameData.price} />
                 ))}
             </div>
-            <p className={"absolute font-costco text-red-600 text-2xl md:text-4xl top-1/3  left-1/2 -translate-x-1/2 w-full"}>Congrats! You got today's item in {guessCnt} tries!</p>
-            <p className={"absolute font-costco text-xl md:text-2xl top-1/2  left-1/2 -translate-x-1/2 w-full"}>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
+            <p className={"absolute font-costco text-red-600 text-2xl md:text-4xl icon:top-1/3 md:top-2/3 left-1/2 -translate-x-1/2 w-full"}>Congrats! You got today's item in {guessCnt} tries!</p>
+            <p className={"absolute font-costco text-xl md:text-2xl icon:top-1/2 md:top-4/5 left-1/2 -translate-x-1/2 w-full"}>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
             <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
                 <p className={"-translate-y-[14px]"}>
                     x
