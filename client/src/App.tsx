@@ -65,7 +65,7 @@ async function setupDiscordSdk() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            code,
+            code
         }),
     }).then(r=>{
         if (r.ok){
@@ -209,6 +209,24 @@ async function getUsersHistory(usersData:UserData[]){
     return usersData
 
 }
+async function registerUser(sessionID:string,userID:string){
+    const response = await fetch("/api/register", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "sessionID":sessionID,
+            "userID":userID
+        })
+    }).then(r=>{
+        if (r.ok){
+            console.log("user registered")
+        }else{
+            console.error("user registration failed")
+        }
+    })
+}
 function App() {
     const [token,setToken]=useState("");
     const [users,setUsers] = useState<UserData[]>([]);
@@ -312,6 +330,11 @@ function App() {
                         userInfo: u,
                         guessInfo: g
                     }
+                    registerUser(discordSdk.instanceId,u.userID).then(r=>{
+                        console.log("user registration done")
+                    }).catch(r=>{
+                        console.error("user registration failure")
+                    })
                     setUserData(temp)
                 }).catch(r => {
                     Sentry.logger.fatal("failed to get current user ")
@@ -358,7 +381,8 @@ function App() {
             price :parseFloat(gameObj.price.substring(1)),
             name:gameObj.name,
             date:date,
-            time:time
+            time:time,
+            instanceID:discordSdk.instanceId
         }
         setGameInfo(currentGame);
     }

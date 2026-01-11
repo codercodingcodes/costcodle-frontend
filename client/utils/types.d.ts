@@ -12,6 +12,7 @@ export type GameInfo = {
     date?:number;
     name:string;
     time:number;
+    instanceID:string;
 }
 export type GuessInfo = {
     hGuess:number;

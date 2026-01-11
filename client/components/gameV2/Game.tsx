@@ -5,7 +5,7 @@ import WinScreen from "../WinScreen/WinScreen";
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 
 
-async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number){
+async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number,instanceID:string){
     return await fetch("/api/guess",{
         method: "POST",
         headers: {
@@ -20,6 +20,7 @@ async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:b
             "username":userInfo.username,
             "gameCompleted":completed,
             "guessCnt":guessCnt,
+            "instanceID":instanceID
         }),
     })
 }
@@ -221,7 +222,7 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                             isLow = true;
                         }
                         let completed = guessDistance(guess) === 0;
-                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt).then(r => {
+                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt,gameData.instanceID).then(r => {
                             console.log("guess sent")
                             if (user.userInfo.channelID) {
                                 updateChannel(user.userInfo.channelID, user.userInfo.userID).then(r => {
