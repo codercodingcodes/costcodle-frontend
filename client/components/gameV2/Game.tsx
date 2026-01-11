@@ -19,8 +19,7 @@ async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:b
             "avatar":userInfo.avatar,
             "username":userInfo.username,
             "gameCompleted":completed,
-            "guessCnt":guessCnt,
-            "instanceID":instanceID
+            "guessCnt":guessCnt
         }),
     })
 }
