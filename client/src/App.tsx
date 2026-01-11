@@ -16,7 +16,7 @@ inject();
 
 const discordSdk = new DiscordSDK("1445980061390999564");
 patchUrlMappings([{prefix: '/img1', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
-patchUrlMappings([{prefix: '/img2', target: 'https://images.costco-static.com/ImageDelivery/'}]);
+patchUrlMappings([{prefix: '/img2', target: 'https://img.freepik.com/premium-vector/file-folder-mascot-character-design-vector_166742-4369.jpg'}]);
 async function setupDiscordSdk() {
     var auth;
     await discordSdk.ready();
@@ -346,7 +346,7 @@ function App() {
         const imgURL:string[] = gameObj.image.split("/")
         let resourcePath = "";
         if (imgURL[2] == "images.costco-static.com"){
-            resourcePath = "/img2/"+imgURL[imgURL.length-1];
+            resourcePath = "/img2";
         }else{
             resourcePath = "/img1/"+imgURL[imgURL.length-1];
         }
