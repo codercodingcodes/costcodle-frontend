@@ -9,6 +9,7 @@ import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {inject} from "@vercel/analytics";
 import * as Sentry from "@sentry/react";
+// @ts-ignore
 import notFound from "../resources/file-folder-mascot-character-design-vector_166742-4369.jpg"
 // @ts-ignore
 import logo from "./images.png";

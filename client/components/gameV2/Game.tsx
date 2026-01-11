@@ -194,7 +194,7 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                         setFn(fn * 10 + n);
                     }
                 } else {
-                    if (wn<100) {
+                    if (wn<1000) {
                         setWn(wn * 10 + n);
                     }
                 }
