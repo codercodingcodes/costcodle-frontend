@@ -344,9 +344,12 @@ function App() {
         let date = r["date"]
         let time = r["time"]
         const imgURL:string[] = gameObj.image.split("/")
-        console.log(imgURL)
-        console.log("image split")
-        const resourcePath = "/img/"+imgURL[imgURL.length-1];
+        let resourcePath = "";
+        if (imgURL[2] == "images.costco-static.com"){
+            resourcePath = "/img2/"+imgURL[imgURL.length-1];
+        }else{
+            resourcePath = "/img1/"+imgURL[imgURL.length-1];
+        }
         const url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
         const currentGame:GameInfo = {
             image :url,
