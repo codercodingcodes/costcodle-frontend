@@ -15,8 +15,8 @@ import logo from "./images.png";
 inject();
 
 const discordSdk = new DiscordSDK("1445980061390999564");
-patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
-patchUrlMappings([{prefix: '/img', target: 'https://images.costco-static.com/ImageDelivery/'}]);
+patchUrlMappings([{prefix: '/img1', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
+patchUrlMappings([{prefix: '/img2', target: 'https://images.costco-static.com/ImageDelivery/'}]);
 async function setupDiscordSdk() {
     var auth;
     await discordSdk.ready();
