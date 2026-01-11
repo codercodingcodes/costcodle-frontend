@@ -22,8 +22,10 @@ function StatCell({user,price}:{user:UserData,price:number}) {
     console.log(user);
     return (
         <div className="inline-block rounded-xl border-gray-400 border-solid border-2 bg-gray-100 p-2 mr-1 font-serif min-w-[220px]">
-
-            <img src={"https://cdn.discordapp.com/avatars/"+user.userInfo.userID+"/"+user.userInfo.avatar+".png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>
+            {user.userInfo.avatar?
+                <img src={"https://cdn.discordapp.com/avatars/"+user.userInfo.userID+"/"+user.userInfo.avatar+".png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>
+                :<img src={"https://cdn.discordapp.com/embed/avatars/0.png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>
+            }
             {user.userInfo.username}
             <div className={"grid grid-cols-5 w-full bg-gray-300 m-auto "}>
                 {progress}
