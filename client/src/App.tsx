@@ -9,14 +9,14 @@ import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {inject} from "@vercel/analytics";
 import * as Sentry from "@sentry/react";
+import notFound from "../resources/file-folder-mascot-character-design-vector_166742-4369.jpg"
 // @ts-ignore
 import logo from "./images.png";
 
 inject();
 
 const discordSdk = new DiscordSDK("1445980061390999564");
-patchUrlMappings([{prefix: '/img1', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
-patchUrlMappings([{prefix: '/img2', target: 'https://img.freepik.com/premium-vector/file-folder-mascot-character-design-vector_166742-4369.jpg'}]);
+patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
     var auth;
     await discordSdk.ready();
@@ -344,13 +344,14 @@ function App() {
         let date = r["date"]
         let time = r["time"]
         const imgURL:string[] = gameObj.image.split("/")
-        let resourcePath = "";
-        if (imgURL[2] == "images.costco-static.com"){
-            resourcePath = "/img2";
+        let url = "";
+        if (imgURL[2] == "costcofdb.com"){
+            const resourcePath = "/img/"+imgURL[imgURL.length-1];
+            url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
         }else{
-            resourcePath = "/img1/"+imgURL[imgURL.length-1];
+            url = notFound
         }
-        const url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
+
         const currentGame:GameInfo = {
             image :url,
             price :parseFloat(gameObj.price.substring(1)),
