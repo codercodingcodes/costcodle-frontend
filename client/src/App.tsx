@@ -368,12 +368,10 @@ function App() {
         let date = r["date"]
         let time = r["time"]
         const imgURL:string[] = gameObj.image.split("/")
-        let url = "";
+        let url = notFound;
         if (imgURL[2] == "costcofdb.com"){
             const resourcePath = "/img/"+imgURL[imgURL.length-1];
             url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
-        }else{
-            url = notFound
         }
 
         const currentGame:GameInfo = {
