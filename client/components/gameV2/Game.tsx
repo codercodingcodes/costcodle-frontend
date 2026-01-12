@@ -272,9 +272,9 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
     }
     return (
         <>
-        {winScreen?
-            <WinScreen guessCnt={guessCnt} gameData={gameData} toggle={toggleWin} users={users}/>
-            :<div></div>}
+            {winScreen?
+                <WinScreen guessCnt={guessCnt} gameData={gameData} toggle={toggleWin} users={users}/>
+                :<div></div>}
             <div className='p-1 md:w-1/3 m-auto font-serif '>
                 {(msgTimer>0 && msg.length>0)?
                 <div className={"bg-gray-300 block w-1/2 md:w-1/4 fixed top-50 left-1/2 -translate-x-1/2 wrap-normal text-center border-gray-500 border-2 rounded-2xl"} ref={alert}>
