@@ -7,7 +7,7 @@ import StatCell from "../stats/StatCell";
 
 function WinScreen({guessCnt,gameData,toggle,users}:{guessCnt:number,gameData:GameInfo,toggle:()=>void,users:UserData[]}) {
     return (
-        <div className="w-full h-full text-center bg-gray-100 fixed">
+        <div className="w-full h-full text-center bg-gray-100 fixed z-20">
             <div className="flex flex-row flex-nowrap overflow-auto fixed w-full bg-gray-100 pt-20 md:pt-2 p-2 top-[50px]">
                 {users.map((user:UserData) => (
                     <StatCell user={user} price={gameData.price} />
