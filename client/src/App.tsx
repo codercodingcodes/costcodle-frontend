@@ -225,6 +225,8 @@ async function registerUser(sessionID:string,userID:string){
         }else{
             console.error("user registration failed")
         }
+    }).catch(r=>{
+        console.error("user registration failed fatally")
     })
 }
 function App() {
