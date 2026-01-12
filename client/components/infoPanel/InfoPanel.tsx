@@ -9,17 +9,17 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                     x
                 </p>
             </button>
-            <div className={"wrap-break-word overflow-scroll text-center font-serif h-full w-full"}>
+            <div className={"wrap-break-word overflow-scroll text-center h-full w-full font-sans"}>
                 <p className={"mt-[10px]"}>
-                    The purpose of this game is to guess the price($USD) of the Costco item listed
+                    Guess the price($USD) of the Costco item listed
                 </p>
                 <p className={"mt-[10px]"}>
-                    <a className={"bg-red-600"}>RED</a> means that your guess is close! Keep making minor adjustments to your price and you will get it soon
+                    <a className={"bg-red-600"}>RED</a> means that your guess is within 10% of the price
                 </p>
-                <p className={"mt-[10px] w-full border-gray-200 border-b-1 border-solid" }>
-                    <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is not quite in the ball park yet and you might need to make some bigger changes to your guesses
+                <p className={"mt-[10px] w-1/2 border-gray-300 border-b-2 border-solid" }>
+                    <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is over 10% of the price
                 </p>
-                <p className={"mt-[10px]"}>
+                <p className={"mt-[10px] mt-5"}>
                     DISCLOSURE!! This game was NOT invented by me but by @KermWasTaken and I merely adapted it to the discord format.
                 </p>
                 <p className={"mt-[10px]"}>

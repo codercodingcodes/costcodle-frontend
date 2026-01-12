@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 function GuessInput({setVal}:{setVal:(x:number) => void}) {
     return (
-        <div className="GuessInput grid grid-cols-4 m-auto h-full w-full">
+        <div className="GuessInput grid grid-cols-4 m-auto h-full w-full pl-1">
             <NumBtn num={"1"} setVal={setVal} value={1}/>
             <NumBtn num={"2"} setVal={setVal} value={2}/>
             <NumBtn num={"3"} setVal={setVal} value={3}/>
