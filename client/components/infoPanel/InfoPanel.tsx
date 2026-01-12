@@ -16,10 +16,19 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                 <p className={"mt-[10px]"}>
                     <a className={"bg-red-600"}>RED</a> means that your guess is within 10% of the price
                 </p>
-                <p className={"mt-[10px] w-1/2 border-gray-300 border-b-2 border-solid" }>
+                <p className={"mt-[10px] w-1/2 border-gray-400 border-b-2 border-solid m-auto" }>
                     <a className={"bg-yellow-300"}>YELLOW</a> means that your guess is over 10% of the price
                 </p>
-                <p className={"mt-[10px] mt-5"}>
+                <p className={"mt-5"}>
+                    You get 5 guesses per day to guess the price of the item
+                </p>
+                <p className={"mt-[10px]"}>
+                    The game will tell you how close your guess is to the actual price via color
+                </p>
+                <p className={"mt-[10px] w-1/2 border-gray-400 border-b-2 border-solid m-auto"}>
+                    The item changes daily and you can see the performance of other users in your channel when you click on the "Friends" in the header
+                </p>
+                <p className={"mt-5"}>
                     DISCLOSURE!! This game was NOT invented by me but by @KermWasTaken and I merely adapted it to the discord format.
                 </p>
                 <p className={"mt-[10px]"}>
@@ -27,15 +36,6 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                 </p>
                 <p className={"mt-[10px]"}>
                     https://costcodle.com/
-                </p>
-                <p className={"mt-[10px]"}>
-                    You get 5 guesses per day to guess the price of the item
-                </p>
-                <p className={"mt-[10px]"}>
-                    The game will tell you how close your guess is to the actual price via color
-                </p>
-                <p className={"mt-[10px]"}>
-                    The item changes daily and you can see the performance of other users in your channel when you click on the "Friends" in the header
                 </p>
                 <p className={"mt-[10px]"}>
                     Press the X on the top right corner of this page or the Friends button on the header to close this screen and return to your game
