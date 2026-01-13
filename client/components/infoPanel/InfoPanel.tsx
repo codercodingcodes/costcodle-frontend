@@ -1,14 +1,11 @@
 // @ts-ignore
 import React from 'react';
+import ExitButton from "../exitButton/ExitButton";
 
 function InfoPanel({toggle}:{toggle:() => void }) {
     return (
         <div className="fixed w-full h-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
-            <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
-                <p className={"-translate-y-[14px]"}>
-                    x
-                </p>
-            </button>
+           <ExitButton toggle={toggle}/>
             <div className={"wrap-break-word overflow-scroll text-center h-full w-full font-sans"}>
                 <p className={"mt-[10px]"}>
                     Guess the price($USD) of the Costco item listed

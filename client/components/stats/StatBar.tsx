@@ -2,6 +2,7 @@
 import React ,{ useState } from 'react';
 import {UserData} from "../../utils/types";
 import StatCell from "./StatCell";
+import ExitButton from "../exitButton/ExitButton";
 
 function StatBar({users,toggle,price}:{users:UserData[],toggle:()=>void,price:number}) {
     return (
@@ -9,11 +10,7 @@ function StatBar({users,toggle,price}:{users:UserData[],toggle:()=>void,price:nu
             {users.map((user:UserData) => (
                 <StatCell user={user} price={price} />
             ))}
-            <button className={"fixed top-[60px] md:top-10 right-[10px] text-3xl bg-red-500 p-1 border-red-700 border-solid border-3 rounded-lg h-[30px]"} onClick={toggle}>
-                <p className={"-translate-y-[14px]"}>
-                    x
-                </p>
-            </button>
+            <ExitButton toggle={toggle}/>
         </div>
     );
 }
