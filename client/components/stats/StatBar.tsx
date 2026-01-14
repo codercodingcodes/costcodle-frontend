@@ -4,12 +4,14 @@ import {UserData} from "../../utils/types";
 import StatCell from "./StatCell";
 import ExitButton from "../exitButton/ExitButton";
 
-function StatBar({users,toggle,price}:{users:UserData[],toggle:()=>void,price:number}) {
+function StatBar({users,self,toggle,price}:{users:UserData[],self:string,toggle:()=>void,price:number}) {
     return (
         <div className="flex flex-row flex-nowrap overflow-auto fixed w-full bg-gray-100 pt-20 md:pt-2 p-2 top-[50px] border-black border-solid border-b-1">
-            {users.map((user:UserData) => (
-                <StatCell user={user} price={price} />
-            ))}
+            {users.map((user:UserData) => {
+                if(!(user.userInfo.userID === self)) {
+                    return(<StatCell user={user} price={price} />)
+                }
+            })}
             <ExitButton toggle={toggle}/>
         </div>
     );

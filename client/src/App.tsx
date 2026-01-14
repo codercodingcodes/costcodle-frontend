@@ -232,7 +232,28 @@ async function registerUser(sessionID:string,userID:string){
 function App() {
     const [token,setToken]=useState("");
     const [users,setUsers] = useState<UserData[]>([]);
-    const [userData,setUserData] = useState<UserData>();
+    const [userData,setUserData] = useState<UserData>(
+        {
+            guessInfo: {
+                hGuess:0,
+                lGuess:0,
+                guessCnt:0,
+                completed:false
+            },
+            userInfo:{
+                username:"",
+                avatar:"",
+                userID:"",
+                channelID:"",
+                guessHistory:{
+                    gamesCompleted:0,
+                    gamesPlayed:0,
+                    totalGuesses:0,
+                    firstTries:0
+                }
+            }
+        }
+    );
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
     const [info,setInfo] = useState<boolean>(false);
@@ -400,7 +421,7 @@ function App() {
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>0
               ?
-              <StatBar users={users} toggle={toggleStat} price={gameInfo.price}/>
+              <StatBar users={users} toggle={toggleStat} price={gameInfo.price} self={userData.userInfo.userID}/>
               :<div></div>}
           {info
               ?<InfoPanel toggle={toggleInfo}/>
