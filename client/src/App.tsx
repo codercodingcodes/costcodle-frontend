@@ -421,8 +421,9 @@ function App() {
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>1
               ?
-              <div className={"border-black border-solid border-b-1"}>
-                <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
+              <div className={"w-full h-full"}>
+                  <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
+                  <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
               </div>
               :<div></div>}
           {info
