@@ -4,7 +4,7 @@ import ExitButton from "../exitButton/ExitButton";
 
 function InfoPanel({toggle}:{toggle:() => void }) {
     return (
-        <div className={"fixed w-full h-full top-0 left-0"}>
+        <div className={"fixed icon:w-full md:w-2/3 h-full icon:top-0 md:top-1/2 icon:left-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2"}>
             <div className="fixed w-full h-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
                <ExitButton toggle={toggle}/>
                 <div className={"wrap-break-word overflow-scroll text-center h-full w-full font-sans"}>
