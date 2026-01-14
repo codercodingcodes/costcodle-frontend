@@ -97,7 +97,7 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
 
     useEffect(() => {
         if (gameOver && win) {
-            setMsg("Congratulations! you got today's guess");
+            console.log("game won")
         }else if (gameOver){
             setMsg("better luck tomorrow");
         }
