@@ -419,7 +419,7 @@ function App() {
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
-          {statbar && gameInfo && users.length>0
+          {statbar && gameInfo && users.length>1
               ?
               <div className={"border-black border-solid border-b-1"}>
                 <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
