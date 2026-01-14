@@ -296,12 +296,12 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                     </div>
                     {high > 0 && !completed?
                         guessDistance(high) === 2?
-                            (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={high} >
+                            (<div className={"grid grid-cols-2 w-full animate-fade-in bg-yellow-300"} key={high} >
                                 <p className={"text-left font-bold text-sm"}>Cold</p>
                                 {(high>0) ?<p className={"text-right text-xl"}> Price is &lt; {high}</p>
                                     :<p></p>}
                             </div>)
-                            :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={high} >
+                            :(<div className={"grid grid-cols-2 w-full animate-fade-in bg-red-600"} key={high} >
                                 <p className={"text-left font-bold text-sm"}>Warm</p>
                                 {(high>0) ?<p className={"text-right text-xl"}> Price is &lt; {high}</p>
                                     :<p></p>}
@@ -322,12 +322,12 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                     }
                     {low > 0 && !completed?
                         guessDistance(low) === 2?
-                            (<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-yellow-300"} key={low} >
+                            (<div className={"grid grid-cols-2 w-full animate-fade-in bg-yellow-300"} key={low} >
                                 <p className={"text-left font-bold text-sm"}>Cold</p>
                                 {(low>0) ?<p className={"text-right text-xl"}> Price is &gt; {low}</p>
                                     :<p></p>}
                             </div>)
-                            :(<div className={"grid grid-cols-2 w-full font-sans animate-fade-in bg-red-600"} key={low} >
+                            :(<div className={"grid grid-cols-2 w-full animate-fade-in bg-red-600"} key={low} >
                                 <p className={"text-left font-bold text-sm"}>Warm</p>
                                 {(low>0) ?<p className={"text-right text-xl"}> Price is &gt; {low}</p>
                                     :<p></p>}
