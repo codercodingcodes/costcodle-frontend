@@ -8,7 +8,7 @@ function InfoPanel({toggle}:{toggle:() => void }) {
             <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggle}/>
             <div className="fixed w-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
                <ExitButton toggle={toggle}/>
-                <div className={"wrap-break-word overflow-scroll text-center font-sans icon:w-full md:w-1/2 h-full icon:top-0 md:top-1/2 icon:left-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2"}>
+                <div className={"fixed p-4 wrap-break-word overflow-scroll text-center font-sans icon:w-full md:w-1/2 h-full icon:top-0 md:top-1/2 icon:left-0 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2"}>
                     <p className={"mt-[10px]"}>
                         Guess the price($USD) of the Costco item listed in 5 guesses
                     </p>
