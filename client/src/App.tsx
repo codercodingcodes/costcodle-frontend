@@ -430,7 +430,7 @@ function App() {
     }
     return (
       <div className={"bg-gray-200"}>
-          <img className={"icon:w-full md:w-2/3 m-auto fixed arbitrary:block icon:hidden"} src={logo}/>
+          <img className={"w-full h-full fixed arbitrary:block icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>1
               ?
               <div className={"w-full h-full animate-fade-in-fast"} key={statbarKey}>
