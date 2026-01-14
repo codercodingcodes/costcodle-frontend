@@ -433,7 +433,7 @@ function App() {
           <img className={"w-full h-full fixed arbitrary:block icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>1
               ?
-              <div className={"w-full h-full animate-fade-in"} key={statbarKey}>
+              <div className={"w-full h-full animate-fade-in-fast"} key={statbarKey}>
                   <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
                   <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
               </div>
