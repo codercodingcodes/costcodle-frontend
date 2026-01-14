@@ -6,7 +6,7 @@ import checkMark from "./Eo_circle_green_checkmark.svg.png";
 // @ts-ignore
 import cross from "./Red_X.svg.png";
 
-function StatCell({user,price}:{user:UserData,price:number}) {
+function StatCell({user}:{user:UserData}) {
     const progress = [];
 
     for (let i=1;i<=Math.min(user.guessInfo.guessCnt,5);i++){
@@ -16,8 +16,6 @@ function StatCell({user,price}:{user:UserData,price:number}) {
             progress.push(<img src={cross} className={"w-[20px] h-[20px]"}/>)
         }
     }
-    console.log(price)
-
     console.log("correct");
     console.log(user);
     return (

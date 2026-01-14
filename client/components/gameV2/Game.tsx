@@ -273,7 +273,7 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
     return (
         <>
             {winScreen?
-                <WinScreen guessCnt={guessCnt} gameData={gameData} toggle={toggleWin} users={users}/>
+                <WinScreen guessCnt={guessCnt} gameData={gameData} toggle={toggleWin} users={users} self={freshUser.userInfo.userID}/>
                 :<div></div>}
             <div className='p-1 md:w-1/3 m-auto font-serif '>
                 {(msgTimer>0 && msg.length>0)?
