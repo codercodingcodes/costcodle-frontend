@@ -4,7 +4,7 @@ import ExitButton from "../exitButton/ExitButton";
 
 function InfoPanel({toggle}:{toggle:() => void }) {
     return (
-        <div className={"fixed h-full w-full"}>
+        <div className={"fixed h-full w-full animate-fade-in-fast"}>
             <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggle}/>
             <div className="fixed w-full bg-gray-100 pt-20 md:pt-0 top-[50px]">
                <ExitButton toggle={toggle}/>
