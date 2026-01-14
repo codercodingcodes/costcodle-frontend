@@ -256,7 +256,9 @@ function App() {
     );
     const [gameInfo,setGameInfo] = useState<GameInfo>();
     const [statbar,setStatBar] = useState<boolean>(false);
+    const [statbarKey,setStatBarKey] = useState<string>("1");
     const [info,setInfo] = useState<boolean>(false);
+    const [infoKey,setinfoKey] = useState<string>("3");
     const [update,setUpdate] = useState<number>(0);
 
 
@@ -409,28 +411,38 @@ function App() {
     }
     function toggleStat(){
         setStatBar(!statbar)
+        if (statbarKey === "4"){
+            setStatBarKey("3")
+        }else {
+            setStatBarKey("4")
+        }
     }
     function toggleInfo(){
         setInfo(!info)
+        if (statbarKey === "1"){
+            setStatBarKey("2")
+        }else {
+            setStatBarKey("1")
+        }
     }
     function forceUpdate(){
         setUpdate(update+1)
     }
     return (
       <div className={"bg-gray-200"}>
-          <img className={"w-full h-full fixed icon:hidden"} src={logo}/>
+          <img className={"w-full h-full fixed block icon:hidden"} src={logo}/>
           {statbar && gameInfo && users.length>1
               ?
-              <div className={"w-full h-full"}>
+              <div className={"w-full h-full animate-fade-in"} key={statbarKey}>
                   <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
                   <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
               </div>
               :<div></div>}
           {info
-              ?<InfoPanel toggle={toggleInfo}/>
+              ?<InfoPanel toggle={toggleInfo} key={infoKey}/>
               :<div></div>
           }
-          <Header toggleStat={toggleStat} toggleInfo={toggleInfo} />
+          <Header toggleStat={toggleStat} toggleInfo={toggleInfo}/>
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
                   <Game user={userData} gameData={gameInfo} update={forceUpdate} users={users}/>
