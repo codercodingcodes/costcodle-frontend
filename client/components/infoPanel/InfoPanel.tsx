@@ -13,10 +13,10 @@ function InfoPanel({toggle}:{toggle:() => void }) {
                         Guess the price($USD) of the Costco item listed in 5 guesses
                     </p>
                     <p className={"mt-[10px] text-lg "}>
-                        <a className={"bg-red-600 font-bold"}>RED</a> means that your guess is within 10% of the price
+                        <a className={"bg-red-600 font-bold"}>RED</a> means that your guess is within 10% of the price or within &lt; 3 dollars
                     </p>
                     <p className={"text-lg mt-[10px] w-full border-gray-400 border-b-2 border-solid m-auto pb-5" }>
-                        <a className={"bg-yellow-300 font-bold"}>YELLOW</a> means that your guess is over 10% of the price
+                        <a className={"bg-yellow-300 font-bold"}>YELLOW</a> means that your guess is over 10% of the price or &gt; 3 dollars away
                     </p>
                     <p className={"mt-5 text-sm"}>
                         DISCLOSURE!! This game was NOT invented by me but by @KermWasTaken and I merely adapted it to the discord format.
