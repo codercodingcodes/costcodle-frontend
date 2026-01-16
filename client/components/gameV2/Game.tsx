@@ -285,7 +285,9 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                     :<div></div>}
                 <p>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
                 {!completed?
-                    <p>Guess #{guessCnt} / 5</p>
+                    guessCnt <5 ?
+                        <p>Guess #{guessCnt} / 5</p>
+                        :<p>Better luck tomorrow!</p>
                     :<p>Congrats! you got it in {guessCnt} guesses today!</p>}
                 <div className={"border-black border-2 p-2 bg-white mt-2"}>
                     <div className={"text-left text-3xl ml-5"}>
