@@ -8,10 +8,14 @@ function StatBar({users,self,toggle}:{users:UserData[],self:string,toggle:()=>vo
     return (
         <div className="flex flex-row flex-nowrap overflow-auto fixed w-full bg-gray-100 pt-20 md:pt-2 p-2 top-[50px] ">
             {users.map((user:UserData) => {
-                if(!(user.userInfo.userID === self)) {
-                    return(<StatCell user={user}/>)
-                }
+                // if(!(user.userInfo.userID === self)) {
+                //     return(<StatCell user={user}/>)
+                // }
+                return(<StatCell user={user}/>)
             })}
+            {
+
+            }
             <ExitButton toggle={toggle}/>
         </div>
 

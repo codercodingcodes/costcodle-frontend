@@ -298,6 +298,31 @@ function App() {
         }
         return currentUser;
     }
+    function updateUsers(){
+        if (discordSdk.channelId) {
+            getChannel(discordSdk.channelId).then(cUsers => {
+                console.log(cUsers);
+                console.log("channel done");
+                if (cUsers.length>0) {
+                    getUsersHistory(cUsers).then(us => {
+                        console.log("user history populated");
+                        setUsers(us);
+                    }).catch(r => {
+                        console.error("failed to populate user history")
+                    })
+                }else {
+                    console.log("no user history");
+                    setUsers(cUsers)
+                }
+            }).catch(r=>{
+                Sentry.logger.fatal("failed to get channel info ")
+                console.error("failed to get channel info" + r.toString())
+                discordSdk.close(4000,"Error loading, Please try again later")
+            })
+        } else {
+            console.log("no channel");
+        }
+    }
     useEffect(() => {
         if (token.length===0) {
             setupDiscordSdk().then((token) => {
@@ -311,29 +336,7 @@ function App() {
         },[])
     useEffect(() => {
         discordSdk.ready().then(r=>{
-            if (discordSdk.channelId) {
-                getChannel(discordSdk.channelId).then(cUsers => {
-                    console.log(cUsers);
-                    console.log("channel done");
-                    if (cUsers.length>0) {
-                        getUsersHistory(cUsers).then(us => {
-                            console.log("user history populated");
-                            setUsers(us);
-                        }).catch(r => {
-                            console.error("failed to populate user history")
-                        })
-                    }else {
-                        console.log("no user history");
-                        setUsers(cUsers)
-                    }
-                }).catch(r=>{
-                    Sentry.logger.fatal("failed to get channel info ")
-                    console.error("failed to get channel info" + r.toString())
-                    discordSdk.close(4000,"Error loading, Please try again later")
-                })
-            } else {
-                console.log("no channel");
-            }
+            updateUsers()
         })
     }, [update]);
     useEffect(() => {
@@ -427,6 +430,7 @@ function App() {
     }
     function forceUpdate(){
         setUpdate(update+1)
+        updateUsers()
     }
     return (
       <div className={"bg-gray-200"}>
