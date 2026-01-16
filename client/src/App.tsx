@@ -435,7 +435,7 @@ function App() {
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed z-20 [@media(height<300px)]:block [@media(height>300px)]:hidden"} src={logo}/>
-          {statbar && gameInfo && users.length>1
+          {statbar && gameInfo && users.length>0
               ?
               <div className={"w-full h-full animate-fade-in-fast"} key={statbarKey}>
                   <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
