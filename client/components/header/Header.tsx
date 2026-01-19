@@ -11,7 +11,7 @@ function Header({toggleStat,toggleInfo}:{toggleStat:() => void ,toggleInfo:()=>v
             <button onClick={toggleInfo}>
                 <img src={infoIcon} className="h-[30px] w-[30px] m-auto"/>
             </button>
-            <p className={"text-3xl text-red-600 w-full h-full m-auto"}>Costcodle</p>
+            <p className={"text-3xl text-red-600 w-full h-full m-auto -translate-x-1/2"}>Costcodle</p>
             <button onClick={toggleStat}>
                 <img src={statsIcon} className="h-[30px] w-[30px] m-auto"/>
             </button>
