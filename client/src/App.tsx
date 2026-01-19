@@ -189,7 +189,6 @@ async function getUsersHistory(usersData:UserData[]){
     console.log("users history retrieved");
 
     for (let i = 0; i < r.length; i++) {
-        console.log(r[i][8])
         const userID:string = r[i][1]
         const gameCompleted:boolean = r[i][6]
         const guessCnt:number = r[i][5]
@@ -200,7 +199,6 @@ async function getUsersHistory(usersData:UserData[]){
         }
         current.totalGuesses += guessCnt
         if (guessCnt === 1){
-            console.log("first try")
             current.firstTries ++
         }
     }
@@ -263,8 +261,6 @@ function App() {
 
 
     async function getUser(token:string){
-        console.log("user");
-        console.log(token);
         const response = await fetch("https://discord.com/api/users/@me",{
             method:"GET",
             headers:{

@@ -16,8 +16,6 @@ function StatCell({user}:{user:UserData}) {
             progress.push(<img src={cross} className={"w-[20px] h-[20px]"}/>)
         }
     }
-    console.log("correct");
-    console.log(user);
     return (
         <div className="inline-block rounded-xl bg-gray-200 hover:bg-gray-300 p-2 mr-1 font-sans font-bold min-w-[220px] ml-2">
             {user.userInfo.avatar?

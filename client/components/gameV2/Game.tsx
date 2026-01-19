@@ -179,8 +179,6 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
     // @ts-ignore
     const handleKeyDown = (event) => {
         setActiveKey(parseIntoCode(event.key));
-        console.log(event.key);
-        console.log(parseIntoCode(event.key));
         setTimeout(() => {
             setActiveKey(-1);
         }, 100);
