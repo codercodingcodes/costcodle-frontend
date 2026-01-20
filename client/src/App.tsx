@@ -80,8 +80,6 @@ async function setupDiscordSdk() {
         discordSdk.close(4000,"Error loading, Please try again later")
     });
     const { access_token } = await response?.json();
-    console.log(access_token);
-    console.log("access");
     // Authenticate with Discord client (using the access_token)
     auth = await discordSdk.commands.authenticate({
         access_token,

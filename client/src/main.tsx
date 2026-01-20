@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import * as Sentry from "@sentry/react";
 
 Sentry.init({
@@ -26,6 +27,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <SpeedInsights/>
       <App />
   </React.StrictMode>
 );
