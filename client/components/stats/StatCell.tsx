@@ -28,7 +28,7 @@ function StatCell({user}:{user:UserData}) {
             </div>
             <p>Games Played: {user.userInfo.guessHistory.gamesPlayed}</p>
             <p>Games Completed: {user.userInfo.guessHistory.gamesCompleted}</p>
-            <p>Average Daily Guesses: {Math.floor(user.userInfo.guessHistory.totalGuesses/user.userInfo.guessHistory.gamesPlayed)}</p>
+            <p>Average Daily Guesses: {(user.userInfo.guessHistory.totalGuesses/user.userInfo.guessHistory.gamesPlayed).toFixed(1)}</p>
             <p>First Guess Aces: {user.userInfo.guessHistory.firstTries}</p>
         </div>
     );
