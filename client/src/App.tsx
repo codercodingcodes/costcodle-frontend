@@ -16,7 +16,7 @@ import logo from "./images.png";
 
 inject();
 
-const discordSdk = new DiscordSDK("1445980061390999564");
+const discordSdk = new DiscordSDK(import.meta.env.APP_ID);
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
     var auth;
@@ -24,7 +24,7 @@ async function setupDiscordSdk() {
 
     // Authorize with Discord Client
     const { code } = await discordSdk.commands.authorize({
-        client_id: "1445980061390999564",
+        client_id: import.meta.env.APP_ID,
         response_type: 'code',
         state: '',
         prompt: 'none',
@@ -183,7 +183,6 @@ async function getUsersHistory(usersData:UserData[]){
         }
     })
     const r = await response?.json();
-    console.log(r);
     console.log("users history retrieved");
 
     for (let i = 0; i < r.length; i++) {
@@ -363,7 +362,7 @@ function App() {
                     console.error("failed to get current user " + r.toString())
                     discordSdk.close(4000,"Error loading, Please try again later")
                 });
-                forceUpdate()
+                updateUsers()
             }).catch(r=>{
                 Sentry.logger.fatal("failed to get current user token ")
                 console.error("failed to retrieve user token " + r.toString())
@@ -375,7 +374,7 @@ function App() {
 
     async function parseGame(){
         const protocol = `https`;
-        const clientId = '1445980061390999564';
+        const clientId = import.meta.env.APP_ID;
         const proxyDomain = 'discordsays.com';
         const response = await fetch("/api/game",{
             method: 'GET',
@@ -422,10 +421,6 @@ function App() {
             setStatBarKey("1")
         }
     }
-    function forceUpdate(){
-        setUpdate(update+1)
-        updateUsers()
-    }
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed z-20 [@media(height<300px)]:block [@media(height>300px)]:hidden"} src={logo}/>
@@ -443,7 +438,7 @@ function App() {
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo}/>
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
-                  <Game user={userData} gameData={gameInfo} update={forceUpdate} users={users}/>
+                  <Game user={userData} gameData={gameInfo} update={updateUsers} users={users}/>
                   :<LoadingScreen/>}
           </div>
       </div>

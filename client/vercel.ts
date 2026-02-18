@@ -1,9 +1,9 @@
 import { routes, type VercelConfig } from '@vercel/config/v1';
+import "utils/types"
 
 export const config: VercelConfig = {
     buildCommand: 'npm run build',
     rewrites: [
-        routes.rewrite('/api/(.*)', 'https://costcodle.vercel.app/$1'),
-        // routes.rewrite('/api/(.*)', 'https://costcodle-321020937506.europe-west1.run.app/$1'),
+        routes.rewrite('/api/(.*)', process.env.BACKEND_URL+'/$1'),
     ],
 };
