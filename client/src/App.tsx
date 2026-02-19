@@ -323,6 +323,7 @@ function App() {
                 console.log("Discord SDK is ready");
                 setToken(token);
             }).catch(r => {
+                console.error(r)
                 Sentry.logger.fatal("failed to set up discord sdk")
                 console.error("failed to set up discord sdk")
             });
