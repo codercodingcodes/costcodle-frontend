@@ -17,6 +17,8 @@ import logo from "./images.png";
 inject();
 
 const discordSdk = new DiscordSDK(import.meta.env.APP_ID);
+console.log(import.meta.env.APP_ID);
+console.log(process.env.APP_ID);
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
     var auth;
