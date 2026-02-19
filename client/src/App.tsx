@@ -16,9 +16,8 @@ import logo from "./images.png";
 
 inject();
 
-const discordSdk = new DiscordSDK(import.meta.env.APP_ID);
+const discordSdk = new DiscordSDK(import.meta.env.VITE_APP_ID);
 console.log(import.meta.env.VITE_APP_ID);
-console.log(process.env.VITE_APP_ID);
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
     var auth;
@@ -26,7 +25,7 @@ async function setupDiscordSdk() {
 
     // Authorize with Discord Client
     const { code } = await discordSdk.commands.authorize({
-        client_id: import.meta.env.APP_ID,
+        client_id: import.meta.env.VITE_APP_ID,
         response_type: 'code',
         state: '',
         prompt: 'none',
@@ -376,7 +375,7 @@ function App() {
 
     async function parseGame(){
         const protocol = `https`;
-        const clientId = import.meta.env.APP_ID;
+        const clientId = import.meta.env.VITE_APP_ID;
         const proxyDomain = 'discordsays.com';
         const response = await fetch("/api/game",{
             method: 'GET',
