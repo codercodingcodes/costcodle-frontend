@@ -1,20 +1,39 @@
 // @ts-ignore
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // @ts-ignore
-import loading from './membership-card-business.png';
 import {GameInfo, UserData} from "../../utils/types";
 import StatBar from "../stats/StatBar";
 import { BarChart } from '@mui/x-charts/BarChart';
-import ExitButton from "../exitButton/ExitButton";
+
+async function getWinDistribution(){
+    const response = await fetch("/api/winDistribution", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    if (!response.ok) {
+        console.error("win distribution fetch failed");
+        return [0, 0, 0, 0, 0];
+    }
+    return await response.json();
+}
 
 function WinScreen({guessCnt,gameData,toggle,users,self}:{guessCnt:number,gameData:GameInfo,toggle:()=>void,users:UserData[],self:string}) {
+    const [distribution, setDistribution] = useState<number[]>([0, 0, 0, 0, 0]);
+
+    useEffect(() => {
+        getWinDistribution().then(setDistribution);
+    }, []);
+
     return (
         <div className="top-0 w-full h-full text-center bg-gray-100 fixed animate-fade-in-fast">
             <StatBar users={users} self={self} toggle={toggle}/>
             <BarChart
+                xAxis={[{scaleType: 'band', data: [1, 2, 3, 4, 5]}]}
                 series={[
                     {
-                        data: [2, 5, 3],
+                        data: distribution,
                     },
                 ]}
             />
