@@ -4,13 +4,12 @@ import React, {useEffect, useState} from 'react';
 import {GameInfo, UserData} from "../../utils/types";
 import StatBar from "../stats/StatBar";
 import { BarChart } from '@mui/x-charts/BarChart';
+import {authHeaders} from "../../utils/apiAuth";
 
 async function getWinDistribution(){
     const response = await fetch("/api/winDistribution", {
         method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders(),
     });
     if (!response.ok) {
         console.error("win distribution fetch failed");

@@ -9,6 +9,7 @@ import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {inject} from "@vercel/analytics";
 import * as Sentry from "@sentry/react";
+import {authHeaders, setJwt} from "../utils/apiAuth";
 // @ts-ignore
 import notFound from "../resources/file-folder-mascot-character-design-vector_166742-4369.jpg"
 // @ts-ignore
@@ -80,7 +81,12 @@ async function setupDiscordSdk() {
         console.error("auth failure")
         discordSdk.close(4000,"Error loading, Please try again later")
     });
-    const { access_token } = await response?.json();
+    const authPayload = await response?.json();
+    const { access_token, token } = authPayload;
+    if (!token) {
+        throw new Error('App JWT missing from auth response');
+    }
+    setJwt(token);
     // Authenticate with Discord client (using the access_token)
     auth = await discordSdk.commands.authenticate({
         access_token,
@@ -98,9 +104,7 @@ async function getChannel(channelID:string){
     }
     const response = await fetch("/api/channel?" + new URLSearchParams(params).toString(),{
         method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     })
     const query = await response.json();
     let cUsers:UserData[] = []
@@ -137,9 +141,7 @@ async function getUserCurrent(userID:string){
     params.append('getHistory','false')
     const response = await fetch("/api/guess?" + params.toString(),{
         method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     })
     const query = await response.json();
     console.log(query)
@@ -172,9 +174,7 @@ async function getUsersHistory(usersData:UserData[]){
 
     const response = await fetch('/api/guess?'+params.toString(),{
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     }).then(r=>{
         if (r.ok){
             return r;
@@ -208,9 +208,7 @@ async function getUsersHistory(usersData:UserData[]){
 async function registerUser(sessionID:string,userID:string){
     const response = await fetch("/api/register", {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: authHeaders(),
         body: JSON.stringify({
             "sessionID":sessionID,
             "userID":userID
@@ -330,10 +328,12 @@ function App() {
         }
         },[])
     useEffect(() => {
-        discordSdk.ready().then(r=>{
-            updateUsers()
-        })
-    }, [update]);
+        if (token.length > 0) {
+            discordSdk.ready().then(r=>{
+                updateUsers()
+            })
+        }
+    }, [update, token]);
     useEffect(() => {
         if (token.length>0) {
             parseGame().then(r=>{
@@ -380,9 +380,7 @@ function App() {
         const proxyDomain = 'discordsays.com';
         const response = await fetch("/api/game",{
             method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-            }
+            headers: authHeaders()
         })
         const r = await response.json();
         console.log("gameinfo working");
