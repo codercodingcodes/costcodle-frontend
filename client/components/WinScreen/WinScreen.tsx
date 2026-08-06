@@ -34,21 +34,27 @@ function WinScreen({guessCnt,gameData,toggle,users,self}:{guessCnt:number,gameDa
     }, []);
 
     return (
-        <div className="top-0 w-full h-full text-center bg-gray-100 fixed animate-fade-in-fast">
-            <StatBar users={users} self={self} toggle={toggle}/>
-            <BarChart
-                className={"top-1/2"}
-                xAxis={[{scaleType: 'band', data: [1, 2, 3, 4, 5]}]}
-                yAxis={[{valueFormatter: (v: number | null) => `${v ?? 0}%`}]}
-                series={[
-                    {
-                        data: distribution,
-                        valueFormatter: (v: number | null) => `${v ?? 0}%`,
-                    },
-                ]}
-            />
-            <p className={"absolute font-costco text-red-600 text-2xl md:text-4xl top-2/3 left-1/2 -translate-x-1/2 w-full"}>Congrats! You got today's item in {guessCnt} tries!</p>
-            <p className={"absolute font-costco text-xl md:text-2xl top-4/5 left-1/2 -translate-x-1/2 w-full"}>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
+        <div className="top-0 w-full h-full text-center bg-gray-100 fixed animate-fade-in-fast grid grid-rows-3">
+            <div className="min-h-0 overflow-auto">
+                <StatBar users={users} self={self} toggle={toggle} embedded/>
+            </div>
+            <div className="min-h-0 w-full flex items-center justify-center px-2">
+                <BarChart
+                    xAxis={[{scaleType: 'band', data: [1, 2, 3, 4, 5]}]}
+                    yAxis={[{valueFormatter: (v: number | null) => `${v ?? 0}%`}]}
+                    series={[
+                        {
+                            data: distribution,
+                            valueFormatter: (v: number | null) => `${v ?? 0}%`,
+                        },
+                    ]}
+                    sx={{width: '100%', height: '100%'}}
+                />
+            </div>
+            <div className="min-h-0 flex flex-col items-center justify-center px-2">
+                <p className={"font-costco text-red-600 text-2xl md:text-4xl w-full"}>Congrats! You got today's item in {guessCnt} tries!</p>
+                <p className={"font-costco text-xl md:text-2xl w-full"}>Next game in : {24-Math.floor(gameData.time / 3600)} hrs</p>
+            </div>
         </div>
     );
 }
