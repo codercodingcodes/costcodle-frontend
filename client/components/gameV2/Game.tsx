@@ -216,25 +216,26 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                             isLow = true;
                         }
                         let completed = guessDistance(guess) === 0;
-                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt,gameData.instanceID).then(r => {
+                        sendGuessDB(guess, isHigh, isLow,completed,freshUser.userInfo,guessCnt,gameData.instanceID).then(async r => {
                             console.log("guess sent")
                             if (user.userInfo.channelID) {
-                                updateChannel(user.userInfo.channelID, user.userInfo.userID).then(r => {
-                                    if (r.ok){
+                                try {
+                                    const channelRes = await updateChannel(user.userInfo.channelID, user.userInfo.userID);
+                                    if (channelRes.ok){
                                         console.log("channel updated")
                                     } else{
                                         console.error("channel update failed")
                                     }
-                                }).catch(r=>{
+                                } catch {
                                     console.error("channel update failed")
-                                })
+                                }
                             }
+                            update()
                         }).catch(r=>{
                             console.error("db post failed")
                         })
                         setGuessCnt(guessCnt + 1)
                         setCompleted(completed)
-                        update()
                     }else {
                         setMsg("Please input a value greater than 0")
                     }
