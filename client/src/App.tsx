@@ -424,13 +424,19 @@ function App() {
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed z-20 [@media(height<300px)]:block [@media(height>300px)]:hidden"} src={logo}/>
-          {statbar && gameInfo && users.length>0
-              ?
-              <div className={"w-full h-full animate-fade-in-fast"} key={statbarKey}>
-                  <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
-                  <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
-              </div>
-              :<div></div>}
+          {statbar && gameInfo
+              ? users.length > 0
+                  ? <div className={"w-full h-full animate-fade-in-fast"} key={statbarKey}>
+                      <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
+                      <StatBar users={users} toggle={toggleStat} self={userData.userInfo.userID}/>
+                  </div>
+                  : <div className={"fixed h-full w-full animate-fade-in-fast z-10"} key={statbarKey}>
+                      <button className={"h-full w-full fixed opacity-20 bg-black"} onClick={toggleStat}/>
+                      <div className={"border-black border-3 border-solid fixed p-4 text-center font-serif w-[90%] md:w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-200"}>
+                          <p className={"text-lg font-bold"}>No games has been played today in this channel, make your first guess!</p>
+                      </div>
+                  </div>
+              : <div></div>}
           {info
               ?<InfoPanel toggle={toggleInfo} key={infoKey}/>
               :<div></div>
