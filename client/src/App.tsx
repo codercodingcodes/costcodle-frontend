@@ -9,6 +9,7 @@ import InfoPanel from "../components/infoPanel/InfoPanel";
 import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import {inject} from "@vercel/analytics";
 import * as Sentry from "@sentry/react";
+import {authHeaders, setJwt} from "../utils/apiAuth";
 // @ts-ignore
 import notFound from "../resources/file-folder-mascot-character-design-vector_166742-4369.jpg"
 // @ts-ignore
@@ -16,7 +17,8 @@ import logo from "./images.png";
 
 inject();
 
-const discordSdk = new DiscordSDK("1445980061390999564");
+const discordSdk = new DiscordSDK(import.meta.env.VITE_APP_ID);
+console.log(import.meta.env.VITE_APP_ID);
 patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
 async function setupDiscordSdk() {
     var auth;
@@ -24,7 +26,7 @@ async function setupDiscordSdk() {
 
     // Authorize with Discord Client
     const { code } = await discordSdk.commands.authorize({
-        client_id: "1445980061390999564",
+        client_id: import.meta.env.VITE_APP_ID,
         response_type: 'code',
         state: '',
         prompt: 'none',
@@ -79,7 +81,12 @@ async function setupDiscordSdk() {
         console.error("auth failure")
         discordSdk.close(4000,"Error loading, Please try again later")
     });
-    const { access_token } = await response?.json();
+    const authPayload = await response?.json();
+    const { access_token, token } = authPayload;
+    if (!token) {
+        throw new Error('App JWT missing from auth response');
+    }
+    setJwt(token);
     // Authenticate with Discord client (using the access_token)
     auth = await discordSdk.commands.authenticate({
         access_token,
@@ -97,9 +104,7 @@ async function getChannel(channelID:string){
     }
     const response = await fetch("/api/channel?" + new URLSearchParams(params).toString(),{
         method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     })
     const query = await response.json();
     let cUsers:UserData[] = []
@@ -136,9 +141,7 @@ async function getUserCurrent(userID:string){
     params.append('getHistory','false')
     const response = await fetch("/api/guess?" + params.toString(),{
         method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     })
     const query = await response.json();
     console.log(query)
@@ -171,9 +174,7 @@ async function getUsersHistory(usersData:UserData[]){
 
     const response = await fetch('/api/guess?'+params.toString(),{
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: authHeaders()
     }).then(r=>{
         if (r.ok){
             return r;
@@ -183,7 +184,6 @@ async function getUsersHistory(usersData:UserData[]){
         }
     })
     const r = await response?.json();
-    console.log(r);
     console.log("users history retrieved");
 
     for (let i = 0; i < r.length; i++) {
@@ -208,9 +208,7 @@ async function getUsersHistory(usersData:UserData[]){
 async function registerUser(sessionID:string,userID:string){
     const response = await fetch("/api/register", {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: authHeaders(),
         body: JSON.stringify({
             "sessionID":sessionID,
             "userID":userID
@@ -323,16 +321,19 @@ function App() {
                 console.log("Discord SDK is ready");
                 setToken(token);
             }).catch(r => {
+                console.error(r)
                 Sentry.logger.fatal("failed to set up discord sdk")
                 console.error("failed to set up discord sdk")
             });
         }
         },[])
     useEffect(() => {
-        discordSdk.ready().then(r=>{
-            updateUsers()
-        })
-    }, [update]);
+        if (token.length > 0) {
+            discordSdk.ready().then(r=>{
+                updateUsers()
+            })
+        }
+    }, [update, token]);
     useEffect(() => {
         if (token.length>0) {
             parseGame().then(r=>{
@@ -363,7 +364,7 @@ function App() {
                     console.error("failed to get current user " + r.toString())
                     discordSdk.close(4000,"Error loading, Please try again later")
                 });
-                forceUpdate()
+                updateUsers()
             }).catch(r=>{
                 Sentry.logger.fatal("failed to get current user token ")
                 console.error("failed to retrieve user token " + r.toString())
@@ -375,13 +376,11 @@ function App() {
 
     async function parseGame(){
         const protocol = `https`;
-        const clientId = '1445980061390999564';
+        const clientId = import.meta.env.VITE_APP_ID;
         const proxyDomain = 'discordsays.com';
         const response = await fetch("/api/game",{
             method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-            }
+            headers: authHeaders()
         })
         const r = await response.json();
         console.log("gameinfo working");
@@ -422,10 +421,6 @@ function App() {
             setStatBarKey("1")
         }
     }
-    function forceUpdate(){
-        setUpdate(update+1)
-        updateUsers()
-    }
     return (
       <div className={"bg-gray-200"}>
           <img className={"w-full h-full fixed z-20 [@media(height<300px)]:block [@media(height>300px)]:hidden"} src={logo}/>
@@ -443,7 +438,7 @@ function App() {
           <Header toggleStat={toggleStat} toggleInfo={toggleInfo}/>
           <div className="App bg-gray-200 pt-20 md:pt-0 h-full">
               {userData && gameInfo?
-                  <Game user={userData} gameData={gameInfo} update={forceUpdate} users={users}/>
+                  <Game user={userData} gameData={gameInfo} update={updateUsers} users={users}/>
                   :<LoadingScreen/>}
           </div>
       </div>

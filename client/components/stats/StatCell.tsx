@@ -17,7 +17,7 @@ function StatCell({user}:{user:UserData}) {
         }
     }
     return (
-        <div className="inline-block rounded-xl bg-gray-200 hover:bg-gray-300 p-2 mr-1 font-sans font-bold min-w-[220px] ml-2">
+        <div className="inline-block rounded-xl bg-gray-200 hover:bg-gray-300 p-2 mr-1 font-sans font-bold min-w-[220px] ml-2 overflow-y-auto">
             {user.userInfo.avatar?
                 <img src={"https://cdn.discordapp.com/avatars/"+user.userInfo.userID+"/"+user.userInfo.avatar+".png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>
                 :<img src={"https://cdn.discordapp.com/embed/avatars/0.png"} className={"rounded-4xl border-solid border-2 border-black w-[100px] h-[100px] m-auto"}/>

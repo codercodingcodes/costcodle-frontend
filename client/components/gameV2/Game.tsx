@@ -3,14 +3,13 @@ import GuessInput from "../guessInput/GuessInput";
 import { useState } from 'react';
 import WinScreen from "../WinScreen/WinScreen";
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
+import {authHeaders} from "../../utils/apiAuth";
 
 
 async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number,instanceID:string){
     return await fetch("/api/guess",{
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: authHeaders(),
         body: JSON.stringify({
             "guess":guess,
             "isHigh":isHigh,
@@ -31,9 +30,7 @@ function mobileCheck() {
 async function updateChannel(channelID:string,userID:string){
     return await fetch("/api/channel",{
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: authHeaders(),
         body: JSON.stringify({
             channelID:channelID,
             userID:userID,
