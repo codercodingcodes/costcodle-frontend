@@ -4,6 +4,8 @@ import { useState } from 'react';
 import WinScreen from "../WinScreen/WinScreen";
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 import {authHeaders} from "../../utils/apiAuth";
+// @ts-ignore
+import notFound from "../../resources/file-folder-mascot-character-design-vector_166742-4369.jpg";
 
 
 async function sendGuessDB(guess:number,isHigh:boolean,isLow:boolean,completed:boolean,userInfo:UserInfo,guessCnt:number,instanceID:string){
@@ -344,7 +346,14 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                 </div>
                 <div className={"grid grid-cols-2 w-full mt-2"}>
                     <div className={""}>
-                        <img src={gameData.image} className={"w-full m-auto border-8 border-red-600" }/>
+                        <img
+                            src={gameData.image}
+                            className={"w-full m-auto border-8 border-red-600"}
+                            onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = notFound;
+                            }}
+                        />
                     </div>
                     {!gameOver?
                         <div className={"w-full mt-2 m-auto h-full"}>
