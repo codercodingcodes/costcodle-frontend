@@ -19,7 +19,7 @@ inject();
 
 const discordSdk = new DiscordSDK(import.meta.env.VITE_APP_ID);
 console.log(import.meta.env.VITE_APP_ID);
-patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads/2022/01'}]);
+patchUrlMappings([{prefix: '/img', target: 'https://costcofdb.com/wp-content/uploads'}]);
 async function setupDiscordSdk() {
     var auth;
     await discordSdk.ready();
@@ -388,11 +388,17 @@ function App() {
         let gameObj = r["game"]
         let date = r["date"]
         let time = r["time"]
-        const imgURL:string[] = gameObj.image.split("/")
+        const uploadsPrefix = "/wp-content/uploads/";
         let url = notFound;
-        if (imgURL[2] == "costcofdb.com"){
-            const resourcePath = "/img/"+imgURL[imgURL.length-1];
-            url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
+        try {
+            const imgURL = new URL(gameObj.image);
+            if (imgURL.hostname == "costcofdb.com" && imgURL.pathname.startsWith(uploadsPrefix)){
+                // keep the year/month folders, e.g. /img/2024/06/foo.jpg
+                const resourcePath = "/img/"+imgURL.pathname.slice(uploadsPrefix.length);
+                url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
+            }
+        } catch (e) {
+            console.error("invalid game image url " + gameObj.image);
         }
 
         const currentGame:GameInfo = {
