@@ -375,9 +375,6 @@ function App() {
 
 
     async function parseGame(){
-        const protocol = `https`;
-        const clientId = import.meta.env.VITE_APP_ID;
-        const proxyDomain = 'discordsays.com';
         const response = await fetch("/api/game",{
             method: 'GET',
             headers: authHeaders()
@@ -393,9 +390,9 @@ function App() {
         try {
             const imgURL = new URL(gameObj.image);
             if (imgURL.hostname == "costcofdb.com" && imgURL.pathname.startsWith(uploadsPrefix)){
-                // keep the year/month folders, e.g. /img/2024/06/foo.jpg
-                const resourcePath = "/img/"+imgURL.pathname.slice(uploadsPrefix.length);
-                url =`${protocol}://${clientId}.${proxyDomain}${resourcePath}`;
+                // keep the year/month folders, e.g. /.proxy/img/2024/06/foo.jpg
+                // in-activity requests must go through Discord's /.proxy/ path
+                url = "/.proxy/img/"+imgURL.pathname.slice(uploadsPrefix.length);
             }
         } catch (e) {
             console.error("invalid game image url " + gameObj.image);

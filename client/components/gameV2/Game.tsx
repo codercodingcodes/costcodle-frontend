@@ -4,6 +4,7 @@ import { useState } from 'react';
 import WinScreen from "../WinScreen/WinScreen";
 import {UserData,GameInfo,UserInfo} from "../../utils/types";
 import {authHeaders} from "../../utils/apiAuth";
+import * as Sentry from "@sentry/react";
 // @ts-ignore
 import notFound from "../../resources/file-folder-mascot-character-design-vector_166742-4369.jpg";
 
@@ -56,6 +57,23 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
     const [freshUser,setFreshUser] = useState(user);
     const [completed,setCompleted] = useState(false);
     const [winScreen,setWinScreen] = useState(false);
+    const [imageFailed,setImageFailed] = useState(false);
+    const [imageReported,setImageReported] = useState(false);
+
+    function reportImage(){
+        Sentry.captureMessage("image not found report", {
+            level: "warning",
+            extra: {
+                imageURL: gameData.image,
+                imageFailed: imageFailed,
+                gameDate: gameData.date,
+                gameName: gameData.name,
+                userID: user.userInfo.userID,
+                instanceID: gameData.instanceID,
+            },
+        });
+        setImageReported(true);
+    }
 
     const userInput = useRef<HTMLInputElement>(null);
     const alert = useRef<HTMLDivElement>(null);
@@ -350,10 +368,24 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                             src={gameData.image}
                             className={"w-full m-auto border-8 border-red-600"}
                             onError={(e) => {
+                                const failedSrc = e.currentTarget.src;
                                 e.currentTarget.onerror = null;
                                 e.currentTarget.src = notFound;
+                                setImageFailed(true);
+                                // log as strings so they show up in Discord's forwarded console
+                                console.error("image failed to load: " + failedSrc);
+                                fetch(failedSrc)
+                                    .then(r => console.error("image fetch status: " + r.status + " " + r.headers.get("content-type") + " " + r.url))
+                                    .catch(err => console.error("image fetch error: " + err));
                             }}
                         />
+                        <button
+                            onClick={reportImage}
+                            disabled={imageReported}
+                            className={"mt-1 w-full text-sm underline disabled:no-underline disabled:opacity-60"}
+                        >
+                            {imageReported ? "Thanks, image reported!" : "Report image not found"}
+                        </button>
                     </div>
                     {!gameOver?
                         <div className={"w-full mt-2 m-auto h-full"}>
