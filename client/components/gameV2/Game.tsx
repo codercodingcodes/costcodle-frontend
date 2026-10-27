@@ -375,7 +375,12 @@ function Game({gameData,user,update,users}:{gameData:GameInfo,user:UserData,upda
                                 // log as strings so they show up in Discord's forwarded console
                                 console.error("image failed to load: " + failedSrc);
                                 fetch(failedSrc)
-                                    .then(r => console.error("image fetch status: " + r.status + " " + r.headers.get("content-type") + " " + r.url))
+                                    .then(async r => {
+                                        console.error("image fetch status: " + r.status + " " + r.headers.get("content-type") + " " + r.url);
+                                        console.error("image fetch headers: " + [...r.headers.entries()].map(([k, v]) => k + "=" + v).join("; "));
+                                        const body = await r.text();
+                                        console.error("image fetch body: " + body.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").slice(0, 400));
+                                    })
                                     .catch(err => console.error("image fetch error: " + err));
                             }}
                         />
