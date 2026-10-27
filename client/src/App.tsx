@@ -387,15 +387,19 @@ function App() {
         let time = r["time"]
         const uploadsPrefix = "/wp-content/uploads/";
         let url = notFound;
-        try {
-            const imgURL = new URL(gameObj.image);
-            if (imgURL.hostname == "costcofdb.com" && imgURL.pathname.startsWith(uploadsPrefix)){
-                // keep the year/month folders, e.g. /.proxy/img/2024/06/foo.jpg
-                // in-activity requests must go through Discord's /.proxy/ path
-                url = "/.proxy/img/"+imgURL.pathname.slice(uploadsPrefix.length);
+        if (typeof gameObj.image === "string" && gameObj.image.startsWith("/games/")) {
+            // images are bundled in public/games, e.g. /games/2022/01/foo.jpg
+            url = gameObj.image;
+        } else if (gameObj.image) {
+            try {
+                // older backends send costcofdb.com URLs, map them to the bundled copy
+                const imgURL = new URL(gameObj.image);
+                if (imgURL.hostname == "costcofdb.com" && imgURL.pathname.startsWith(uploadsPrefix)){
+                    url = "/games/"+imgURL.pathname.slice(uploadsPrefix.length);
+                }
+            } catch (e) {
+                console.error("invalid game image url " + gameObj.image);
             }
-        } catch (e) {
-            console.error("invalid game image url " + gameObj.image);
         }
 
         const currentGame:GameInfo = {
